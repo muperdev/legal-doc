@@ -2,26 +2,33 @@
 
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState('account')
 
   return (
-    <div className="flex-1 overflow-auto bg-gray-100">
-      <header className="bg-white shadow">
+    <div className="flex-1 overflow-auto bg-black">
+      <header className="bg-black shadow">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
+          <h1 className="text-3xl font-bold text-white">Settings</h1>
         </div>
       </header>
 
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="bg-white shadow-sm rounded-lg">
+        <div className="bg-black shadow-sm rounded-lg">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="account">Account</TabsTrigger>
@@ -91,7 +98,12 @@ function TeamsSettings() {
             <div key={team.id} className="flex items-center justify-between p-4 border rounded-lg">
               <div className="flex items-center space-x-4">
                 <Avatar>
-                  <AvatarFallback>{team.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                  <AvatarFallback>
+                    {team.name
+                      .split(' ')
+                      .map((n) => n[0])
+                      .join('')}
+                  </AvatarFallback>
                 </Avatar>
                 <div>
                   <p className="font-medium">{team.name}</p>
@@ -104,7 +116,9 @@ function TeamsSettings() {
         </div>
       </CardContent>
       <CardFooter>
-        <Button><Plus className="mr-2 h-4 w-4" /> Create New Team</Button>
+        <Button>
+          <Plus className="mr-2 h-4 w-4" /> Create New Team
+        </Button>
       </CardFooter>
     </Card>
   )
@@ -117,9 +131,7 @@ function NotificationSettings() {
         <CardTitle>Notification Settings</CardTitle>
         <CardDescription>Manage your notification preferences.</CardDescription>
       </CardHeader>
-      <CardContent>
-        {/* Add notification settings here */}
-      </CardContent>
+      <CardContent>{/* Add notification settings here */}</CardContent>
     </Card>
   )
 }
@@ -131,10 +143,7 @@ function SecuritySettings() {
         <CardTitle>Security Settings</CardTitle>
         <CardDescription>Manage your account security and privacy.</CardDescription>
       </CardHeader>
-      <CardContent>
-        {/* Add security settings here */}
-      </CardContent>
+      <CardContent>{/* Add security settings here */}</CardContent>
     </Card>
   )
 }
-

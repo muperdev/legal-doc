@@ -37,9 +37,9 @@ const subscriptionPlans: SubscriptionPlan[] = [
 
 export default function SubscriptionPage() {
   return (
-    <PageContainer title="Subscription" subtitle="Select the best plan for your needs">
+    <PageContainer title="Subscription">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-900">Choose Your Plan</h2>
+        <h2 className="text-3xl font-bold text-white">Choose Your Plan</h2>
         <p className="mt-4 text-xl text-gray-600">Compare our flexible pricing options</p>
       </div>
 

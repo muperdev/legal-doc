@@ -47,10 +47,10 @@ export default async function Dashboard() {
         {/* Recent Documents */}
         <div>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-gray-900">Recent Documents</h2>
+            <h2 className="text-xl font-semibold text-white">Recent Documents</h2>
             <Link
               href="/dashboard/new-document"
-              className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm font-medium rounded-full shadow-lg hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transform hover:scale-105 transition-all duration-200"
+              className="px-4 py-2 bg-gradient-to-r from-blue-500 to-primary-blue text-white text-sm font-medium rounded-lg shadow-lg  hover:bg-blue-500  transform hover:scale-105 transition-all duration-200"
             >
               <Plus className="inline-block h-5 w-5 mr-2" />
               New Document
@@ -60,10 +60,10 @@ export default async function Dashboard() {
             documents={
               user?.documents?.map((doc) => ({
                 id: (doc as any).id,
-                title: (doc as any).title || 'Untitled',
-                type: (doc as any).type || 'Document',
-                status: (doc as any).status || 'Draft',
-                lastEdited: (doc as any).updatedAt || new Date().toISOString(),
+                filename: (doc as any).filename || 'Untitled',
+                mimeType: (doc as any).mimeType || 'Document',
+                updatedAt: (doc as any).updatedAt || new Date().toISOString(),
+                createdAt: (doc as any).createdAt || new Date().toISOString(),
               })) || []
             }
           />
@@ -71,7 +71,7 @@ export default async function Dashboard() {
 
         {/* Quick Actions */}
         <div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
+          <h2 className="text-xl font-semibold text-white mb-4">Quick Actions</h2>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             <QuickActionCard
               title="Create NDA"

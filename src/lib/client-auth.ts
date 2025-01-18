@@ -1,12 +1,16 @@
 'use client'
 
+import { User } from "@/payload-types"
+
 export type LoginFormData = {
   email: string
   password: string
 }
 
 export type SignupFormData = LoginFormData & {
-  name: string
+  firstName: string
+  lastName: string
+  email: string
   confirmPassword: string
   terms: boolean
 }

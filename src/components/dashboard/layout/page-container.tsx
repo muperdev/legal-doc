@@ -1,33 +1,32 @@
-import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
+import Link from 'next/link'
 
 interface PageContainerProps {
   children: React.ReactNode
   title: string
-  subtitle?: string
   backUrl?: string
 }
 
-export function PageContainer({ children, title, subtitle, backUrl }: PageContainerProps) {
+export function PageContainer({ children, title, backUrl }: PageContainerProps) {
   return (
-    <div className="flex-1 overflow-auto bg-gray-100 font-sans">
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+    <div className="flex-1 overflow-auto bg-black">
+      <header className="bg-black border-b border-neutral-800/50/[0.06]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center">
             {backUrl && (
-              <Link href={backUrl} className="mr-4 text-gray-500 hover:text-gray-700">
+              <Link
+                href={backUrl}
+                className="mr-4 p-2 -ml-2 text-neutral-400 hover:text-white transition-colors"
+              >
                 <ArrowLeft className="h-5 w-5" />
               </Link>
             )}
-            <div>
-              <h1 className="text-3xl font-bold tracking-tight text-gray-900">{title}</h1>
-              {subtitle && <p className="mt-2 text-lg text-gray-600">{subtitle}</p>}
-            </div>
+            <h1 className="text-3xl font-bold text-white">{title}</h1>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">{children}</main>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">{children}</main>
     </div>
   )
 }

@@ -8,13 +8,15 @@ import { Pricing } from '@/components/landing/pricing'
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-white text-gray-800 font-sans">
-      <Navigation />
-      <Hero />
-      <Features />
-      <Benefits />
-      <HowItWorks />
-      <Pricing />
+    <div className="min-h-screen bg-black">
+      <div className="relative isolate p-4">
+        <Navigation />
+        <Hero />
+        <Features />
+        <Benefits />
+        <HowItWorks />
+        <Pricing />
+      </div>
     </div>
   )
 }

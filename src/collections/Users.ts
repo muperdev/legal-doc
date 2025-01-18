@@ -35,6 +35,10 @@ export const Users: CollectionConfig = {
       type: 'checkbox',
     },
     {
+      name: 'companyName',
+      type: 'text',
+    },
+    {
       name: 'clients',
       type: 'relationship',
       relationTo: 'clients',

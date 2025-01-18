@@ -2,10 +2,10 @@ import { PricingCard } from '@/components/cards/pricing-card'
 
 export function Pricing() {
   return (
-    <div className="bg-white py-12">
+    <div className="bg-black py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">Pricing Plans</h2>
+          <h2 className="text-3xl font-extrabold text-white sm:text-4xl">Pricing Plans</h2>
           <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
             Choose the plan that fits your needs.
           </p>

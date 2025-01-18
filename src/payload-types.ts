@@ -70,6 +70,7 @@ export interface User {
   phoneNumber?: string | null;
   address?: string | null;
   exceededLimit?: boolean | null;
+  companyName?: string | null;
   clients?: (number | Client)[] | null;
   documents?: (number | Document)[] | null;
   role: 'admin' | 'user';
@@ -196,6 +197,7 @@ export interface UsersSelect<T extends boolean = true> {
   phoneNumber?: T;
   address?: T;
   exceededLimit?: T;
+  companyName?: T;
   clients?: T;
   documents?: T;
   role?: T;

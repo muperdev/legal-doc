@@ -6,7 +6,7 @@ export async function POST(req: Request) {
   try {
     const data = await req.json()
     const payload = await getPayload({ config })
-
+    console.log(data)
     const result = await payload.create({
       collection: 'users',
       data,

@@ -22,7 +22,7 @@ async function generateDocument(data: { clientId: string; documentType: string }
   }
   let response
   try {
-    response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/documents/generate`, {
+    response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/generate`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -47,7 +47,6 @@ async function generateDocument(data: { clientId: string; documentType: string }
 
 async function uploadDocument(file: File, user: User) {
   'use server'
-  console.log(file, 'file')
   let result
   try {
     const formData = new FormData()
@@ -65,7 +64,6 @@ async function uploadDocument(file: File, user: User) {
     console.error('Error uploading document:', error)
     throw error
   }
-  console.log(result)
 
   try {
     await payload.update({
@@ -94,7 +92,7 @@ export default async function NewDocumentPage() {
 
   return (
     <PageContainer title="New Document" backUrl="/dashboard">
-      <div className="py-8">
+      <div className="py-8 w-full">
         <DocumentWizard
           user={user as User}
           clients={(user?.clients || []).map((client: any) => ({

@@ -16,7 +16,8 @@ export const signupSchema = z
         'Password must contain at least one uppercase letter, one lowercase letter, and one number',
       ),
     confirmPassword: z.string(),
-    name: z.string().min(2, 'Name must be at least 2 characters'),
+    firstName: z.string().min(2, 'Name must be at least 2 characters'),
+    lastName: z.string().min(2, 'Name must be at least 2 characters'),
     terms: z.literal(true, {
       errorMap: () => ({ message: 'You must accept the terms and conditions' }),
     }),
