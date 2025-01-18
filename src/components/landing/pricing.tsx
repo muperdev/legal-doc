@@ -32,7 +32,7 @@ const PRICING_PLANS: Record<string, PricingPlan> = {
     ],
   },
   enterprise: {
-    name: 'Entourage Plan',
+    name: 'Doc Geeks Plan',
     monthly: 49,
     features: [
       'All Business features',
