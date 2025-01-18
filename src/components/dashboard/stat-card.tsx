@@ -1,11 +1,5 @@
 import { StatCardProps } from '@/types/dashboard'
 
-interface StatCardProps {
-  title: string
-  value: number | string
-  icon: React.ReactNode
-}
-
 export function StatCard({ title, value, icon }: StatCardProps) {
   return (
     <div className="bg-black border border-neutral-800/50/[0.06] overflow-hidden rounded-lg">
