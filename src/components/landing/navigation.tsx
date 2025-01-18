@@ -1,28 +1,49 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+export const Links = [
+  { label: 'Home', href: '/' },
+  { label: 'Terms', href: '/terms-and-conditions' },
+  { label: 'Privacy', href: '/privacy' },
+]
+
 export function Navigation() {
   return (
-    <nav className="bg-black text-white shadow-sm sticky top-0 z-50 pt-2">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex">
-            <div className="flex-shrink-0 flex items-center">
-              <Image src="/logo.png" alt="Logo" width={200} height={20} />
-            </div>
+    <nav className="sticky top-0 z-50 bg-black">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2">
+        <div className="flex h-16 items-center justify-between">
+          <div className="hidden space-x-8 md:flex">
+            {Links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-sm font-medium text-gray-300 transition-colors hover:text-white"
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
-          <div className="flex items-center">
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            width={259}
+            height={64}
+            className="cursor-pointer"
+            style={{ backgroundColor: 'transparent' }}
+            priority
+          />
+          <div className="flex items-center space-x-4">
             <Link
               href="/login"
-              className="text-white hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+              className="text-sm font-medium text-gray-300 transition-colors hover:text-white"
             >
               Log in
             </Link>
             <Link
               href="/signup"
-              className="ml-4 px-6 py-3 bg-gradient-to-r bg-primary-blue text-white font-medium rounded-lg shadow-lg focus:outline-none focus:ring-2 hover:bg-blue-600 focus:ring-opacity-50 transform hover:scale-105 transition-all duration-200"
+              className="bg-[#ffde21] px-5 py-2 text-sm font-medium text-black shadow-md transition-all duration-200 hover:bg-[#e5c71e] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#ffde21] focus:ring-opacity-50"
             >
-              Sign up
+              Sign Up
             </Link>
           </div>
         </div>

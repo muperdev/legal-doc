@@ -1,52 +1,69 @@
-import { LegalPage } from "@/components/legal-page/page";
+import { Navigation } from '@/components/landing/navigation'
+import { LegalPage } from '@/components/legal-page/page'
 
 export default function PrivacyPolicyPage() {
   return (
-    <LegalPage title="Privacy Policy">
-      <h3 className="text-2xl font-semibold">1. Introduction</h3>
-      <p>
-        Matedocs (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is committed to protecting the
-        privacy of our users (&quot;you&quot; or &quot;your&quot;). This Privacy Policy explains how
-        we collect, use, disclose, and safeguard your information when you use our legal document
-        generation platform (the &quot;Service&quot;).
-      </p>
-      <p>
-        Please read this Privacy Policy carefully. By accessing or using the Service, you
-        acknowledge that you have read, understood, and agree to be bound by all the terms outlined
-        in this Privacy Policy. If you do not agree with our policies and practices, please do not
-        use our Service.
+    <div className="flex-1 space-y-4 p-8 pt-6 font-sans bg-black min-h-screen">
+      <Navigation />
+      <LegalPage title="Privacy Policy">
+        <p className="text-sm text-gray-400 mb-6">Effective Date: January 1, 2024</p>
+
+      <p className="mb-6 text-gray-300">
+        At gimmedoc.com, your privacy is important to us. This Privacy Policy explains how we
+        collect, use, and protect your information.
       </p>
 
-      <h3 className="text-2xl font-semibold">2. Information We Collect</h3>
-      <p>We collect several types of information from and about users of our Service, including:</p>
-
-      <h4 className="text-xl font-medium">2.1 Personal Data</h4>
-      <p>
-        Personal Data refers to any information that identifies or can be used to identify an
-        individual. We may collect the following types of Personal Data:
+      <h3 className="text-2xl font-semibold mt-8 text-white">1. Information Collection</h3>
+      <p className="mb-4 text-gray-300">
+        We collect personal information when you create an account, make a purchase, or use our
+        services. This may include:
       </p>
-      <ul className="list-disc pl-6">
+      <ul className="list-disc pl-6 mb-6 text-gray-300">
         <li>Name</li>
-        <li>Email address</li>
-        <li>Billing address</li>
-        <li>Payment information (processed securely through Paddle)</li>
-        <li>Company name and details (for business users)</li>
-        <li>IP address</li>
-        <li>Usage data and preferences</li>
+        <li>Email Address</li>
+        <li>Payment Information</li>
+        <li>Usage Data</li>
       </ul>
 
-      <h4 className="text-xl font-medium">2.2 Non-Personal Data</h4>
-      <p>
-        We may also collect non-personal data that does not directly or indirectly reveal your
-        identity or directly relate to an identifiable individual, such as:
+      <h3 className="text-2xl font-semibold mt-8 text-white">2. How We Use Your Information</h3>
+      <p className="mb-4 text-gray-300">We use your information to:</p>
+      <ul className="list-disc pl-6 mb-6 text-gray-300">
+        <li>Provide and improve our services</li>
+        <li>Process transactions</li>
+        <li>Communicate with you</li>
+        <li>Comply with legal obligations</li>
+      </ul>
+
+      <h3 className="text-2xl font-semibold mt-8 text-white">3. Data Security</h3>
+      <p className="mb-6 text-gray-300">
+        We implement industry-standard security measures to protect your personal information from
+        unauthorized access, alteration, or destruction.
       </p>
-      <ul className="list-disc pl-6">
-        <li>Browser and device information</li>
-        <li>Usage data</li>
-        <li>Aggregated data</li>
-      </ul>
 
-      {/* Continue with the rest of the privacy policy... */}
-    </LegalPage>
+      <h3 className="text-2xl font-semibold mt-8 text-white">4. Cookies</h3>
+      <p className="mb-6 text-gray-300">
+        We use cookies to enhance your experience on our website. You can control cookie settings
+        through your browser.
+      </p>
+
+      <h3 className="text-2xl font-semibold mt-8 text-white">5. Sharing Your Information</h3>
+      <p className="mb-6 text-gray-300">
+        We do not sell or rent your personal information to third parties. We may share your
+        information with trusted service providers to assist in operating our website and services.
+      </p>
+
+      <h3 className="text-2xl font-semibold mt-8 text-white">6. Your Rights</h3>
+      <p className="mb-6 text-gray-300">
+        You have the right to access, update, or delete your personal information. You can also
+        object to certain processing activities.
+      </p>
+
+      <h3 className="text-2xl font-semibold mt-8 text-white">7. Changes to Privacy Policy</h3>
+      <p className="mb-6 text-gray-300">
+        We may update this Privacy Policy from time to time. We will notify you of any material
+          changes.
+        </p>
+      </LegalPage>
+    </div>
   )
 }

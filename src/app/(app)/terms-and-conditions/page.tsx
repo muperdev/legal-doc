@@ -1,44 +1,75 @@
-import { LegalPage } from "@/components/legal-page/page";
+import { Navigation } from '@/components/landing/navigation'
+import { LegalPage } from '@/components/legal-page/page'
 
 export default function TermsPage() {
   return (
-    <LegalPage title="Terms and Conditions">
-      <h3 className="text-2xl font-semibold">1. Introduction</h3>
-      <p>
-        Welcome to Matedocs, a legal document generation platform for startups. These Terms and Conditions (&quot;Terms&quot;) govern your use of our website and services (collectively, the &quot;Service&quot;). By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of the terms, you may not access the Service.
+    <div className="flex-1 space-y-4 p-8 pt-6 font-sans bg-black min-h-screen">
+      <Navigation />
+      <LegalPage title="Terms and Conditions">
+        <p className="text-sm text-gray-400 mb-6">Effective Date: January 1, 2024</p>
+
+      <p className="mb-6 text-gray-300">
+        Welcome to gimmedoc.com. By using our website and services, you agree to the following Terms
+        and Conditions. If you do not agree with any part of these terms, please do not use our
+        services.
       </p>
 
-      <h3 className="text-2xl font-semibold">2. Definitions</h3>
-      <ul className="list-disc pl-6">
-        <li>&quot;Matedocs&quot; (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) refers to the Matedocs platform and its operators.</li>
-        <li>&quot;User&quot; (&quot;you&quot; or &quot;your&quot;) refers to the individual or entity accessing or using the Service.</li>
-        <li>&quot;Content&quot; refers to any text, data, information, images, or other material generated, provided, or otherwise made available through the Service.</li>
+      <h3 className="text-2xl font-semibold mt-8 text-white">1. Services Provided</h3>
+      <p className="mb-6 text-gray-300">
+        Gimmedoc.com offers legal document generation services to startups. Users can select from
+        different pricing packages to access these services.
+      </p>
+
+      <h3 className="text-2xl font-semibold mt-8 text-white">2. Account Creation</h3>
+      <p className="mb-6 text-gray-300">
+        To access our services, you may need to create an account. You agree to provide accurate and
+        up-to-date information and are responsible for maintaining the confidentiality of your
+        account details.
+      </p>
+
+      <h3 className="text-2xl font-semibold mt-8 text-white">3. Pricing and Payment</h3>
+      <ul className="list-disc pl-6 mb-6 text-gray-300">
+        <li>Basic Package: $19/month</li>
+        <li>Pro Package: $29/month</li>
+        <li>Enterprise Package: $49/month</li>
       </ul>
-
-      <h3 className="text-2xl font-semibold">3. Use of the Service</h3>
-      <h4 className="text-xl font-medium">3.1 Eligibility</h4>
-      <p>
-        You must be at least 18 years old and capable of forming a binding contract to use our Service. If you are using the Service on behalf of a company or other legal entity, you represent that you have the authority to bind such entity to these Terms.
+      <p className="mb-6 text-gray-300">
+        Payment is required for the selected package upon account creation, and you agree to make
+        timely payments to continue receiving services.
       </p>
 
-      <h4 className="text-xl font-medium">3.2 User Account</h4>
-      <p>
-        To access certain features of the Service, you may be required to create an account. You are responsible for maintaining the confidentiality of your account and password. You agree to accept responsibility for all activities that occur under your account.
+      <h3 className="text-2xl font-semibold mt-8 text-white">4. User Obligations</h3>
+      <p className="mb-6 text-gray-300">
+        You agree to use our services only for lawful purposes and not to violate any local, state,
+        or international regulations. You are responsible for any content you generate using
+        gimmedoc.com.
       </p>
 
-      <h4 className="text-xl font-medium">3.3 Acceptable Use</h4>
-      <p>
-        You agree to use the Service only for lawful purposes and in accordance with these Terms. You agree not to:
+      <h3 className="text-2xl font-semibold mt-8 text-white">5. Refunds and Cancellations</h3>
+      <p className="mb-6 text-gray-300">
+        Please see our Refund Policy for information about refunds and cancellations.
       </p>
-      <ul className="list-disc pl-6">
-        <li>Use the Service in any way that violates any applicable local, national, or international law or regulation.</li>
-        <li>Attempt to gain unauthorized access to any portion of the Service or any other systems or networks connected to the Service.</li>
-        <li>Use the Service to generate, upload, or distribute any harmful, offensive, or illegal content.</li>
-        <li>Interfere with or disrupt the integrity or performance of the Service or third-party data contained therein.</li>
-      </ul>
 
-      {/* Continue with the rest of the terms and conditions... */}
-    </LegalPage>
+      <h3 className="text-2xl font-semibold mt-8 text-white">6. Limitations of Liability</h3>
+      <p className="mb-6 text-gray-300">
+        Gimmedoc.com shall not be liable for any direct, indirect, incidental, special, or
+        consequential damages arising out of the use or inability to use our services.
+      </p>
+
+      <h3 className="text-2xl font-semibold mt-8 text-white">7. Changes to Terms</h3>
+      <p className="mb-6 text-gray-300">
+        We reserve the right to modify or update these Terms and Conditions at any time. You will be
+        notified of such changes, and continued use of our services constitutes acceptance of the
+        new terms.
+      </p>
+
+      <h3 className="text-2xl font-semibold mt-8 text-white">8. Governing Law</h3>
+      <p className="mb-6 text-gray-300">
+        These Terms and Conditions are governed by and construed in accordance with the laws of the
+          United States.
+        </p>
+      </LegalPage>
+    </div>
   )
 }
 

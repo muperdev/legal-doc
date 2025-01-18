@@ -1,52 +1,45 @@
 import { Navigation } from '@/components/landing/navigation'
 import { LegalPage } from '@/components/legal-page/page'
+import { Footer } from '@/components/landing/footer'
 
 export default function RefundPolicyPage() {
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6 font-sans">
+    <div className="flex-1 space-y-4 p-8 pt-6 font-sans bg-black min-h-screen">
       <Navigation />
       <LegalPage title="Refund Policy">
-        <h3 className="text-2xl font-semibold">1. Introduction</h3>
-        <p>
-          At Matedocs, we strive to ensure our customers are satisfied with our legal document
-          generation service. This Refund Policy outlines our guidelines for refunds and
-          cancellations. By using our service, you agree to this policy.
+        <p className="text-sm text-gray-400 mb-6">Effective Date: January 1, 2024</p>
+
+        <p className="mb-6 text-gray-300">
+          At gimmedoc.com, we want you to be satisfied with our services. If you are not happy with
+          your purchase, we offer the following refund policy:
         </p>
 
-        <h3 className="text-2xl font-semibold">2. Subscription Cancellations</h3>
-        <h4 className="text-xl font-medium">2.1 Cancellation Process</h4>
-        <p>
-          You may cancel your subscription at any time through your account settings or by
-          contacting our customer support. Upon cancellation:
-        </p>
-        <ul className="list-disc pl-6">
-          <li>
-            Your subscription will remain active until the end of your current billing period.
-          </li>
-          <li>You will not be charged for the next billing cycle.</li>
-          <li>
-            You will continue to have access to the service until the end of your paid subscription
-            period.
-          </li>
-        </ul>
-
-        <h4 className="text-xl font-medium">2.2 No Partial Refunds</h4>
-        <p>
-          We do not provide refunds for partial subscription periods. When you cancel a
-          subscription, you will have access to the service until the end of your current billing
-          period, but no refund will be issued for the unused portion of your subscription.
+        <h3 className="text-2xl font-semibold mt-8 text-white">1. Refund Eligibility</h3>
+        <p className="mb-6 text-gray-300">
+          Refunds are only available within 14 days of purchase for new subscriptions. After 14
+          days, no refunds will be issued.
         </p>
 
-        <h3 className="text-2xl font-semibold">3. Refund Eligibility</h3>
-        <h4 className="text-xl font-medium">3.1 14-Day Money-Back Guarantee</h4>
-        <p>
-          We offer a 14-day money-back guarantee for new subscribers. If you are not satisfied with
-          our service, you may request a full refund within 14 days of your initial subscription
-          purchase.
+        <h3 className="text-2xl font-semibold mt-8 text-white">2. Refund Process</h3>
+        <p className="mb-6 text-gray-300">
+          To request a refund, please contact us at support@gimmedoc.com with your order details. We
+          will process your refund within 5-7 business days of receiving your request.
         </p>
 
-        {/* Continue with the rest of the refund policy... */}
+        <h3 className="text-2xl font-semibold mt-8 text-white">3. Exceptions</h3>
+        <p className="mb-6 text-gray-300">
+          Refunds are not available for canceled or refunded transactions or for services already
+          rendered.
+        </p>
+
+        <h3 className="text-2xl font-semibold mt-8 text-white">4. Cancellation</h3>
+        <p className="mb-6 text-gray-300">
+          You can cancel your subscription at any time through your account settings. Upon
+          cancellation, you will retain access to your subscription until the end of your current
+          billing period.
+        </p>
       </LegalPage>
+      <Footer />
     </div>
   )
 }

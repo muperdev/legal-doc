@@ -1,34 +1,59 @@
-import { StepCard } from '../cards/step-card'
+import { Box } from 'lucide-react'
 
 export function HowItWorks() {
   return (
-    <div className="py-12 bg-black">
+    <div className="py-24 bg-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <h2 className="text-3xl font-extrabold text-white sm:text-4xl ">How It Works</h2>
-          <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
-            Generate legal documents in just three simple steps.
-          </p>
+          <span className="text-sm font-medium text-yellow-500">Easy</span>
+          <h2 className="mt-2 text-4xl font-bold text-white sm:text-5xl">
+            Doc Creation Made Easy in 3 Steps,{' '}
+            <span className="block text-yellow-500">COME ONNNNN!</span>
+          </h2>
+          <p className="mt-4 text-xl text-gray-400">Follow these steps, and you will be fine.</p>
         </div>
 
-        <div className="mt-10">
-          <div className="grid grid-cols-1 gap-10 sm:grid-cols-3">
-            <StepCard
-              number={1}
-              title="Answer a few questions"
-              description="Provide basic information about your needs."
-            />
-            <StepCard
-              number={2}
-              title="Customize your document"
-              description="Review and adjust the generated document as needed."
-            />
-            <StepCard
-              number={3}
-              title="Download and use immediately"
-              description="Get your legal document ready for use instantly."
-            />
+        <div className="mt-20">
+          <div className="grid grid-cols-1 gap-12 sm:grid-cols-3">
+            <div className="text-center">
+              <div className="flex justify-center">
+                <Box className="h-12 w-12 text-yellow-500" />
+              </div>
+              <h3 className="mt-6 text-2xl font-semibold text-white">Step 1: Enter Your Details</h3>
+              <p className="mt-4 text-gray-400">
+                Input your information into our user-friendly form.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="flex justify-center">
+                <Box className="h-12 w-12 text-yellow-500" />
+              </div>
+              <h3 className="mt-6 text-2xl font-semibold text-white">
+                Step 2: Customize Your Document
+              </h3>
+              <p className="mt-4 text-gray-400">Tailor the document to fit your specific needs.</p>
+            </div>
+
+            <div className="text-center">
+              <div className="flex justify-center">
+                <Box className="h-12 w-12 text-yellow-500" />
+              </div>
+              <h3 className="mt-6 text-2xl font-semibold text-white">
+                Step 3: Download or Share Instantly
+              </h3>
+              <p className="mt-4 text-gray-400">Receive your document in just a few clicks.</p>
+            </div>
           </div>
+        </div>
+
+        <div className="mt-16 flex justify-center gap-4">
+          <button className="inline-flex items-center px-6 py-3 border border-yellow-500 text-base font-medium rounded-md text-yellow-500 hover:bg-yellow-500 hover:text-black transition-colors">
+            Start
+          </button>
+          <button className="inline-flex items-center px-6 py-3 text-base font-medium text-white">
+            Learn More →
+          </button>
         </div>
       </div>
     </div>
