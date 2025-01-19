@@ -7,8 +7,8 @@ export function Features() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="max-w-3xl">
-          <h3 className="text-lg font-medium text-[#ffde21]">Efficiency</h3>
-          <h2 className="mt-6 text-4xl font-bold text-white sm:text-5xl">
+          <h3 className="text-lg font-medium text-primary">Efficiency</h3>
+          <h2 className="mt-6 text-4xl font-bold text-white sm:text-5xl font-blackHanSans">
             GimmeDoc is the feeling u missed!
           </h2>
           <p className="mt-6 text-xl text-gray-300">
@@ -21,8 +21,8 @@ export function Features() {
         <div className="mt-20 grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
           {/* Card 1 */}
           <div className="space-y-6">
-            <Box className="h-12 w-12 text-[#ffde21]" />
-            <h3 className="text-2xl font-bold text-white">
+            <Box className="h-12 w-12 text-primary" />
+            <h3 className="text-2xl font-bold text-white font-blackHanSans">
               Why Roll with GimmeDoc for Your Legal Stuff?
             </h3>
             <p className="text-gray-300">Save time and resources with our efficient platform.</p>
@@ -41,8 +41,8 @@ export function Features() {
 
           {/* Card 2 */}
           <div className="space-y-6">
-            <Box className="h-12 w-12 text-[#ffde21]" />
-            <h3 className="text-2xl font-bold text-white">
+            <Box className="h-12 w-12 text-primary" />
+            <h3 className="text-2xl font-bold text-white font-blackHanSans">
               Budget-Friendly Hacks for Every Startup
             </h3>
             <p className="text-gray-300">Cost-effective plans designed to fit your budget.</p>
@@ -50,8 +50,10 @@ export function Features() {
 
           {/* Card 3 */}
           <div className="space-y-6">
-            <Box className="h-12 w-12 text-[#ffde21]" />
-            <h3 className="text-2xl font-bold text-white">Reliable and Ace Doc Creation</h3>
+            <Box className="h-12 w-12 text-primary" />
+            <h3 className="text-2xl font-bold text-white font-blackHanSans">
+              Reliable and Ace Doc Creation
+            </h3>
             <p className="text-gray-300">Ensure your documents meet all legal standards.</p>
           </div>
         </div>

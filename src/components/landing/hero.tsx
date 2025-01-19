@@ -8,7 +8,7 @@ export function Hero() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-center">
           {/* Left Content */}
           <div className="max-w-2xl">
-            <h1 className="text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl">
+            <h1 className="text-5xl font-bold text-white sm:text-6xl lg:text-7xl font-blackHanSans tracking-wider">
               Contracts, are not scary anymore
             </h1>
             <p className="mt-6 text-lg text-gray-300">
@@ -18,7 +18,7 @@ export function Hero() {
             <div className="mt-8 flex gap-4">
               <Link
                 href="/signup"
-                className="bg-[#ffde21] px-8 py-3 text-base font-medium text-black transition-all hover:bg-[#e5c71e]"
+                className="bg-primary px-8 py-3 text-base font-medium text-black transition-all hover:bg-[#e5c71e]"
               >
                 Get Started
               </Link>

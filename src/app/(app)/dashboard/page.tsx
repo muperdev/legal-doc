@@ -25,34 +25,34 @@ export default async function Dashboard() {
           <StatCard
             title="Total Documents"
             value={user?.documents?.length || 0}
-            icon={<FileText className="h-6 w-6 text-gray-400" />}
+            icon={<FileText className="h-6 w-6 text-primary" />}
           />
           <StatCard
             title="Active Clients"
             value={user?.clients?.length || 0}
-            icon={<Users className="h-6 w-6 text-gray-400" />}
+            icon={<Users className="h-6 w-6 text-primary" />}
           />
           <StatCard
             title="Documents This Month"
             value={user?.documents?.length || 0}
-            icon={<BarChart className="h-6 w-6 text-gray-400" />}
+            icon={<BarChart className="h-6 w-6 text-primary" />}
           />
           <StatCard
             title="Subscription Status"
             value={user?.subscription?.status || 'incomplete'}
-            icon={<ShieldCheck className="h-6 w-6 text-gray-400" />}
+            icon={<ShieldCheck className="h-6 w-6 text-primary" />}
           />
         </div>
 
         {/* Recent Documents */}
         <div>
-          <div className="flex items-center justify-between mb-4">
+          <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xl font-semibold text-white">Recent Documents</h2>
             <Link
               href="/dashboard/new-document"
-              className="px-4 py-2 bg-gradient-to-r from-blue-500 to-primary-blue text-white text-sm font-medium rounded-lg shadow-lg  hover:bg-blue-500  transform hover:scale-105 transition-all duration-200"
+              className="inline-flex items-center rounded-lg bg-primary px-5 py-2 text-sm font-medium text-black shadow-md transition-all duration-200 hover:bg-[#e5c71e] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
             >
-              <Plus className="inline-block h-5 w-5 mr-2" />
+              <Plus className="mr-2 h-5 w-5" />
               New Document
             </Link>
           </div>
@@ -62,6 +62,7 @@ export default async function Dashboard() {
                 id: (doc as any).id,
                 filename: (doc as any).filename || 'Untitled',
                 mimeType: (doc as any).mimeType || 'Document',
+                url: (doc as any).url,
                 updatedAt: (doc as any).updatedAt || new Date().toISOString(),
                 createdAt: (doc as any).createdAt || new Date().toISOString(),
               })) || []
@@ -71,19 +72,13 @@ export default async function Dashboard() {
 
         {/* Quick Actions */}
         <div>
-          <h2 className="text-xl font-semibold text-white mb-4">Quick Actions</h2>
+          <h2 className="mb-4 text-xl font-semibold text-white">Quick Actions</h2>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            <QuickActionCard
-              title="Create NDA"
-              description="Generate a new Non-Disclosure Agreement"
-              icon={<FileText className="h-6 w-6" />}
-              href="/dashboard/new-document/nda"
-            />
             <QuickActionCard
               title="Add Client"
               description="Add a new client to your account"
               icon={<Users className="h-6 w-6" />}
-              href="/dashboard/clients/new"
+              href="/dashboard/clients"
             />
             <QuickActionCard
               title="View Analytics"

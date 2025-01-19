@@ -11,35 +11,27 @@ interface PricingPlan {
 }
 
 const PRICING_PLANS: Record<string, PricingPlan> = {
-  starter: {
-    name: 'Straight-Up Plan',
-    monthly: 19,
+  free: {
+    name: 'Free Plan',
+    monthly: 0,
     features: [
-      'Customizable document templates',
-      'Legal compliance assurance',
-      'Quick document generation',
+      'Access to 10 most-used document templates',
+      '5 documents per month',
+      'Basic template customization',
+      'PDF export option',
     ],
   },
   pro: {
     name: 'Get the Game Plan',
-    monthly: 29,
+    monthly: 9.99,
     recommended: true,
     features: [
-      'All Basic features',
-      'Priority customer support',
-      'Advanced customization options',
-      'Collaboration tools included',
-    ],
-  },
-  enterprise: {
-    name: 'Doc Geeks Plan',
-    monthly: 49,
-    features: [
-      'All Business features',
-      'Dedicated account manager',
-      'Custom integrations available',
-      'Extended storage options',
-      'Monthly performance reports',
+      'Unlimited document generation',
+      'Access to all templates',
+      'Enhanced customization options',
+      'PDF/Word export options',
+      'Priority email/chat support',
+      'Document history & saved templates',
     ],
   },
 }
@@ -48,20 +40,18 @@ export function Pricing() {
   const [isYearly, setIsYearly] = useState(false)
 
   const calculatePrice = (monthlyPrice: number) => {
+    if (monthlyPrice === 0) return 0
     if (!isYearly) return monthlyPrice
-    const yearlyPrice = monthlyPrice * 12 * 0.6 // 40% discount
-    return Math.round(yearlyPrice / 12)
+    return 49.99 / 12 // Fixed yearly price divided by 12 for monthly display
   }
 
   return (
-    <div className="py-24 bg-black">
+    <div className="bg-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <span className="text-sm font-medium text-yellow-500">Pricing</span>
-          <h2 className="mt-2 text-4xl font-bold text-white sm:text-5xl">Cost Vibes</h2>
-          <p className="mt-4 text-xl text-gray-400">
-            Pick the plan that vibes with your startup&apos;s hustle.
-          </p>
+          <h2 className="mt-2 text-4xl font-bold text-white sm:text-5xl font-blackHanSans">Simple Pricing</h2>
+          <p className="mt-4 text-xl text-gray-400">Start for free, upgrade when you need more</p>
         </div>
 
         {/* Pricing Toggle */}
@@ -87,13 +77,13 @@ export function Pricing() {
           {isYearly && (
             <div className="mt-3">
               <span className="text-yellow-500 text-sm font-medium">
-                Save 40% with yearly billing
+                Save 50% with yearly billing
               </span>
             </div>
           )}
         </div>
 
-        <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-3">
+        <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 max-w-4xl mx-auto">
           {Object.entries(PRICING_PLANS).map(([key, plan]) => (
             <div
               key={key}
@@ -116,12 +106,14 @@ export function Pricing() {
                 />
               </div>
               <h3 className="text-xl font-bold text-white">{plan.name}</h3>
-              <div className="mt-4 flex items-baseline text-white">
+              <div className="mt-4 flex items-baseline text-white justify-center">
                 <span className="text-5xl font-extrabold tracking-tight">
-                  ${calculatePrice(plan.monthly)}
+                  ${plan.monthly === 0 ? '0' : calculatePrice(plan.monthly).toFixed(2)}
                 </span>
                 <span className="ml-1 text-2xl">/{isYearly ? 'mo' : 'mo'}</span>
-                {isYearly && <span className="ml-2 text-sm text-yellow-500">billed yearly</span>}
+                {isYearly && plan.monthly !== 0 && (
+                  <span className="ml-2 text-sm text-yellow-500">${49.99}/year</span>
+                )}
               </div>
               <div className="mt-6 flex-grow">
                 <div className="text-white font-medium mb-4">Includes:</div>

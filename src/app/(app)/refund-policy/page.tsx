@@ -4,7 +4,7 @@ import { Footer } from '@/components/landing/footer'
 
 export default function RefundPolicyPage() {
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6 font-sans bg-black min-h-screen">
+    <div className="flex-1 space-y-4 p-8 pt-6 blackHanSans bg-black min-h-screen">
       <Navigation />
       <LegalPage title="Refund Policy">
         <p className="text-sm text-gray-400 mb-6">Effective Date: January 1, 2024</p>

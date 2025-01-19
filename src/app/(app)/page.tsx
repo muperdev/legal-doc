@@ -5,12 +5,14 @@ import { HowItWorks } from '@/components/landing/how-it-works'
 import { Pricing } from '@/components/landing/pricing'
 import { Newsletter } from '@/components/landing/newsletter'
 import { Footer } from '@/components/landing/footer'
+import { currentUser } from '@/lib/auth'
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const user = await currentUser()
   return (
     <div className="min-h-screen bg-black">
       <div className="flex flex-col isolate p-4 gap-y-24">
-        <Navigation />
+        <Navigation authenticated={!!user} />
         <Hero />
         <Features />
         <HowItWorks />

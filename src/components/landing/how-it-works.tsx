@@ -5,12 +5,12 @@ export function HowItWorks() {
     <div className="py-24 bg-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <span className="text-sm font-medium text-yellow-500">Easy</span>
-          <h2 className="mt-2 text-4xl font-bold text-white sm:text-5xl">
+          <span className="text-sm font-medium text-yellow-500">Ease</span>
+          <h2 className="mt-2 text-4xl font-bold text-white sm:text-5xl font-blackHanSans">
             Doc Creation Made Easy in 3 Steps,{' '}
-            <span className="block text-yellow-500">COME ONNNNN!</span>
+            <span className="block text-yellow-500 mt-2">COME ONNNNN!</span>
           </h2>
-          <p className="mt-4 text-xl text-gray-400">Follow these steps, and you will be fine.</p>
+          <p className="mt-4 text-xl text-gray-300">Follow these steps, and you will be fine.</p>
         </div>
 
         <div className="mt-20">
@@ -19,8 +19,10 @@ export function HowItWorks() {
               <div className="flex justify-center">
                 <Box className="h-12 w-12 text-yellow-500" />
               </div>
-              <h3 className="mt-6 text-2xl font-semibold text-white">Step 1: Enter Your Details</h3>
-              <p className="mt-4 text-gray-400">
+              <h3 className="mt-6 text-2xl font-semibold text-white font-blackHanSans">
+                Step i: Enter Your Details
+              </h3>
+              <p className="mt-4 text-gray-300">
                 Input your information into our user-friendly form.
               </p>
             </div>
@@ -29,20 +31,20 @@ export function HowItWorks() {
               <div className="flex justify-center">
                 <Box className="h-12 w-12 text-yellow-500" />
               </div>
-              <h3 className="mt-6 text-2xl font-semibold text-white">
-                Step 2: Customize Your Document
+              <h3 className="mt-6 text-2xl font-semibold text-white font-blackHanSans">
+                Step ii: Customize Your Document
               </h3>
-              <p className="mt-4 text-gray-400">Tailor the document to fit your specific needs.</p>
+              <p className="mt-4 text-gray-300">Tailor the document to fit your specific needs.</p>
             </div>
 
             <div className="text-center">
               <div className="flex justify-center">
                 <Box className="h-12 w-12 text-yellow-500" />
               </div>
-              <h3 className="mt-6 text-2xl font-semibold text-white">
-                Step 3: Download or Share Instantly
+              <h3 className="mt-6 text-2xl font-semibold text-white font-blackHanSans">
+                Step iii: Download or Share Instantly
               </h3>
-              <p className="mt-4 text-gray-400">Receive your document in just a few clicks.</p>
+              <p className="mt-4 text-gray-300">Receive your document in just a few clicks.</p>
             </div>
           </div>
         </div>

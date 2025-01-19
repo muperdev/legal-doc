@@ -2,15 +2,19 @@ import { StatCardProps } from '@/types/dashboard'
 
 export function StatCard({ title, value, icon }: StatCardProps) {
   return (
-    <div className="bg-black border border-neutral-800/50/[0.06] overflow-hidden rounded-lg">
-      <div className="p-5">
+    <div className="bg-black border border-neutral-800 overflow-hidden rounded-lg hover:border-primary/50 transition-all duration-200">
+      <div className="p-6">
         <div className="flex items-center">
-          <div className="flex-shrink-0">{icon}</div>
+          <div className="flex-shrink-0">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
+              {icon}
+            </div>
+          </div>
           <div className="ml-5 w-0 flex-1">
             <dl>
-              <dt className="text-sm font-medium text-neutral-400 truncate">{title}</dt>
+              <dt className="truncate text-sm font-medium text-gray-300">{title}</dt>
               <dd>
-                <div className="text-lg font-semibold text-white">{value}</div>
+                <div className="text-2xl font-bold text-white">{value}</div>
               </dd>
             </dl>
           </div>

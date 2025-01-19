@@ -46,8 +46,8 @@ interface DocumentWizardProps {
 export function DocumentWizard({ clients, user, onComplete, onUpload }: DocumentWizardProps) {
   const [step, setStep] = useState(1)
   const [userRole, setUserRole] = useState<'client' | 'provider' | null>(null)
-  const [selectedClient, setSelectedClient] = useState<string>('')
-  const [selectedDocType, setSelectedDocType] = useState<string>('')
+  const [selectedClient, setSelectedClient] = useState('')
+  const [selectedDocType, setSelectedDocType] = useState('')
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -129,8 +129,7 @@ export function DocumentWizard({ clients, user, onComplete, onUpload }: Document
   }
 
   const handleBack = () => {
-    setStep((prev) => Math.max(1, prev - 1))
-    setError(null)
+    setStep(Math.max(1, step - 1))
   }
 
   const handleDownload = async () => {

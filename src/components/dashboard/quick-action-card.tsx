@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 
 interface QuickActionCardProps {
@@ -11,18 +13,14 @@ export function QuickActionCard({ title, description, icon, href }: QuickActionC
   return (
     <Link
       href={href}
-      className="block p-6 bg-black border border-neutral-800/50/[0.06] rounded-lg hover:bg-black/[0.02] transition-colors"
+      className="group block space-y-6 rounded-lg border border-neutral-800 bg-black p-6 transition-all duration-200 hover:border-primary/50"
     >
-      <div className="flex items-center">
-        <div className="flex-shrink-0">
-          <div className="flex items-center justify-center h-12 w-12 rounded-md bg-black/[0.06] text-white">
-            {icon}
-          </div>
-        </div>
-        <div className="ml-4">
-          <h3 className="text-lg font-medium text-white">{title}</h3>
-          <p className="mt-1 text-sm text-neutral-400">{description}</p>
-        </div>
+      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 transition-colors group-hover:bg-primary/20">
+        <div className="text-primary">{icon}</div>
+      </div>
+      <div>
+        <h3 className="text-lg font-semibold text-white">{title}</h3>
+        <p className="mt-2 text-sm text-gray-300">{description}</p>
       </div>
     </Link>
   )

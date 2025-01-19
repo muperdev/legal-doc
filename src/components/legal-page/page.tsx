@@ -7,7 +7,7 @@ interface LegalPageProps {
 
 export function LegalPage({ title, children }: LegalPageProps) {
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6 font-sans bg-black min-h-screen">
+    <div className="flex-1 space-y-4 p-8 pt-6 blackHanSans bg-black min-h-screen">
       <Card className="bg-black border border-neutral-800">
         <CardHeader>
           <CardTitle className="text-white">{title}</CardTitle>

@@ -1,8 +1,8 @@
 import './globals.css'
-import { Open_Sans } from 'next/font/google'
+import { Black_Han_Sans, Open_Sans } from 'next/font/google'
 
-const openSans = Open_Sans({ subsets: ['latin'], variable: '--font-open-sans' })
-
+const blackHanSans = Black_Han_Sans({ subsets: ['latin'], weight: ['400'], style: ['normal'], variable: '--font-black-han-sans' })
+const openSans = Open_Sans({ subsets: ['latin'], weight: ['400'], style: ['normal'], variable: '--font-open-sans' })
 export const metadata = {
   title: 'Gimme Doc - Create Legal Docs in Seconds',
   description:
@@ -13,7 +13,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en">
       <body
-        className={`${openSans.variable} ${openSans.variable} font-sans bg-black text-neutral-400`}
+        className={`${blackHanSans.variable} ${openSans.variable} font-black-han-sans bg-black text-neutral-400`}
       >
         {children}
       </body>

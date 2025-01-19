@@ -103,7 +103,7 @@ export function Testimonials() {
                 key={index}
                 onClick={() => setCurrentSlide(index)}
                 className={`h-2 w-2 rounded-full transition-all ${
-                  currentSlide === index ? 'bg-[#ffde21]' : 'bg-gray-600'
+                  currentSlide === index ? 'bg-primary' : 'bg-gray-600'
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
@@ -113,7 +113,7 @@ export function Testimonials() {
           {/* Progress Bar */}
           <div className="testimonial-progress mt-8">
             <div
-              className="h-full bg-[#ffde21] transition-all duration-500"
+              className="h-full bg-primary transition-all duration-500"
               style={{ width: `${((currentSlide + 1) / testimonials.length) * 100}%` }}
             />
           </div>

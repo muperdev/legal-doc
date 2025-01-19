@@ -12,11 +12,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'old-paper': '#F6E6C8',
-        'dark-charcoal': '#333333',
-        'muted-blue': '#5A7D7C',
-        'royal-blue': '#1E56A0',
-        'primary-blue': '#003d8b',
+        primary: '#ffde21',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
@@ -27,9 +23,9 @@ module.exports = {
           DEFAULT: 'hsl(var(--popover))',
           foreground: 'hsl(var(--popover-foreground))',
         },
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
@@ -59,7 +55,8 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['var(--font-open-sans)'],
+        blackHanSans: ['var(--font-black-han-sans)'],
+        openSans: ['var(--font-open-sans)'],
       },
       borderRadius: {
         lg: 'var(--radius)',

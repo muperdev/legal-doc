@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { LayoutDashboard, Users, FileText, Settings, CreditCard, LogOut } from 'lucide-react'
+import Image from 'next/image'
 
 const routes = [
   {
@@ -32,10 +33,18 @@ export function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <div className="flex flex-col h-full bg-black text-neutral-400 font-sans">
+    <div className="flex flex-col h-full bg-black text-neutral-400 blackHanSans">
       <div className="px-6 py-6">
-        <Link href="/dashboard" className="flex items-center mb-8">
-          <h1 className="text-2xl font-semibold text-white">MateDocs</h1>
+        <Link href="/dashboard" className="flex items-center mb-12">
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            width={200}
+            height={50}
+            className="cursor-pointer"
+            style={{ backgroundColor: 'transparent' }}
+            priority
+          />
         </Link>
         <div className="space-y-1">
           {routes.map((route) => (
@@ -43,11 +52,13 @@ export function Sidebar() {
               key={route.href}
               href={route.href}
               className={cn(
-                'flex items-center gap-x-4 text-sm font-medium py-3 w-full hover:text-white transition',
-                pathname === route.href ? 'text-white' : '',
+                'flex items-center gap-x-4 text-base font-medium py-3 px-4 rounded-lg transition-all duration-200',
+                pathname === route.href
+                  ? 'text-black bg-primary'
+                  : 'text-gray-300 hover:text-white hover:bg-white/5',
               )}
             >
-              <route.icon className={cn('h-6 w-6')} />
+              <route.icon className={cn('h-5 w-5', pathname === route.href ? 'text-black' : '')} />
               {route.label}
             </Link>
           ))}
@@ -56,9 +67,9 @@ export function Sidebar() {
       <div className="mt-auto px-6 py-6 border-t border-neutral-800">
         <Link
           href="/logout"
-          className="flex items-center gap-x-4 text-sm font-medium hover:text-white transition"
+          className="flex items-center gap-x-4 text-base font-medium text-gray-300 hover:text-white transition-colors px-4 py-3 rounded-lg hover:bg-white/5"
         >
-          <LogOut className="h-6 w-6" />
+          <LogOut className="h-5 w-5" />
           Logout
         </Link>
       </div>
