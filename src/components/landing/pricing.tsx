@@ -28,7 +28,7 @@ const PRICING_PLANS: Record<string, PricingPlan> = {
     ],
   },
   pro: {
-    name: 'Get the Game Plan',
+    name: 'Pro Plan',
     monthly: 9.99,
     yearly: 49.99,
     recommended: true,
