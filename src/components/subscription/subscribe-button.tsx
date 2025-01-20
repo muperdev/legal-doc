@@ -50,8 +50,10 @@ export function SubscribeButton({
     try {
       setLoading(true)
 
-      console.log('userSubscriptionStatus', userSubscriptionStatus)
-
+      if (!token) {
+        router.push('/login')
+        return
+      }
       // Handle different subscription states
       if (userSubscriptionStatus === 'active') {
         router.push('/dashboard')
