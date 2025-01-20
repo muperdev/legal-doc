@@ -1,5 +1,6 @@
 import './globals.css'
 import { Black_Han_Sans, Open_Sans } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/react'
 
 const blackHanSans = Black_Han_Sans({ subsets: ['latin'], weight: ['400'], style: ['normal'], variable: '--font-black-han-sans' })
 const openSans = Open_Sans({ subsets: ['latin'], weight: ['400'], style: ['normal'], variable: '--font-open-sans' })
@@ -16,6 +17,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         className={`${blackHanSans.variable} ${openSans.variable} font-black-han-sans bg-black text-neutral-400`}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   )
