@@ -33,17 +33,17 @@ interface GeneratedDocument {
 interface DocumentWizardProps {
   clients: Client[]
   user: User
-  onComplete: (data: {
+  onCompleteAction: (data: {
     clientId: string
     documentType: string
     answers: Record<string, string>
     userRole: 'client' | 'provider'
     serviceProviderId: string
   }) => Promise<GeneratedDocument>
-  onUpload: (file: File, user: User) => Promise<boolean>
+  onUploadAction: (file: File, user: User) => Promise<boolean>
 }
 
-export function DocumentWizard({ clients, user, onComplete, onUpload }: DocumentWizardProps) {
+export function DocumentWizard({ clients, user, onCompleteAction, onUploadAction }: DocumentWizardProps) {
   const [step, setStep] = useState(1)
   const [userRole, setUserRole] = useState<'client' | 'provider' | null>(null)
   const [selectedClient, setSelectedClient] = useState('')
@@ -103,7 +103,7 @@ export function DocumentWizard({ clients, user, onComplete, onUpload }: Document
       setIsLoading(true)
       setError(null)
       try {
-        const result = await onComplete({
+        const result = await onCompleteAction({
           clientId: selectedClient,
           serviceProviderId: user.id.toString(),
           documentType: selectedDocType,
@@ -151,7 +151,7 @@ export function DocumentWizard({ clients, user, onComplete, onUpload }: Document
       URL.revokeObjectURL(url)
 
       // Upload the file
-      await onUpload(pdfFile, user)
+      await onUploadAction(pdfFile, user)
     } catch (error) {
       console.error('Error handling document:', error)
       setError(error instanceof Error ? error.message : 'Failed to process document')

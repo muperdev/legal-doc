@@ -62,6 +62,11 @@ export const Users: CollectionConfig = {
       ],
     },
     {
+      name: 'subscriptionLimit',
+      type: 'number',
+      defaultValue: 5,
+    },
+    {
       name: 'subscription',
       type: 'group',
       fields: [

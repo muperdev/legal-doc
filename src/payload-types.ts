@@ -74,6 +74,7 @@ export interface User {
   clients?: (number | Client)[] | null;
   documents?: (number | Document)[] | null;
   role: 'admin' | 'user';
+  subscriptionLimit?: number | null;
   subscription?: {
     stripeCustomerId?: string | null;
     stripeSubscriptionId?: string | null;
@@ -202,6 +203,7 @@ export interface UsersSelect<T extends boolean = true> {
   clients?: T;
   documents?: T;
   role?: T;
+  subscriptionLimit?: T;
   subscription?:
     | T
     | {

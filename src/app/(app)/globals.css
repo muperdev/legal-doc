@@ -89,3 +89,22 @@
   left: 0;
   right: 0;
 }
+
+@layer utilities {
+  .animate-border-flow {
+    animation: border-flow 3s linear infinite;
+    background-size: 400% 400%;
+  }
+  
+  @keyframes border-flow {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+}

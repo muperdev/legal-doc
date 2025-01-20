@@ -17,7 +17,10 @@ export default async function Dashboard() {
 
   const user = await currentUser()
   return (
-    <PageContainer title="Dashboard">
+    <PageContainer title="Dashboard" showSubscribeButton={
+      user?.subscription?.status === 'incomplete' ||
+      user?.subscription?.status === 'canceled'
+    }>
       <div className="space-y-8">
         {/* Quick stats */}
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">

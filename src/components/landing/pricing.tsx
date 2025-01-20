@@ -2,10 +2,15 @@
 
 import { Box } from 'lucide-react'
 import { useState } from 'react'
+import {
+  SubscribeButton,
+  SubscriptionStatusTypes,
+} from '@/components/subscription/subscribe-button'
 
 interface PricingPlan {
   name: string
   monthly: number
+  yearly: number
   features: string[]
   recommended?: boolean
 }
@@ -14,6 +19,7 @@ const PRICING_PLANS: Record<string, PricingPlan> = {
   free: {
     name: 'Free Plan',
     monthly: 0,
+    yearly: 0,
     features: [
       'Access to 10 most-used document templates',
       '5 documents per month',
@@ -24,6 +30,7 @@ const PRICING_PLANS: Record<string, PricingPlan> = {
   pro: {
     name: 'Get the Game Plan',
     monthly: 9.99,
+    yearly: 49.99,
     recommended: true,
     features: [
       'Unlimited document generation',
@@ -36,85 +43,72 @@ const PRICING_PLANS: Record<string, PricingPlan> = {
   },
 }
 
-export function Pricing() {
+export function Pricing({
+  userSubscriptionStatus,
+  token,
+}: {
+  userSubscriptionStatus: SubscriptionStatusTypes
+  token: string | null
+}) {
   const [isYearly, setIsYearly] = useState(false)
-
-  const calculatePrice = (monthlyPrice: number) => {
-    if (monthlyPrice === 0) return 0
-    if (!isYearly) return monthlyPrice
-    return 49.99 / 12 // Fixed yearly price divided by 12 for monthly display
-  }
 
   return (
     <div className="bg-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <span className="text-sm font-medium text-yellow-500">Pricing</span>
-          <h2 className="mt-2 text-4xl font-bold text-white sm:text-5xl font-blackHanSans">
-            Simple Pricing
-          </h2>
-          <p className="mt-4 text-xl text-gray-400">Start for free, upgrade when you need more</p>
-        </div>
-
         {/* Pricing Toggle */}
-        <div className="mt-12 flex flex-col items-center">
-          <div className="inline-flex ">
+        <div className="flex justify-center mb-12">
+          <div className="inline-flex bg-white/10 rounded-lg p-0.5">
             <button
               onClick={() => setIsYearly(false)}
-              className={`px-4 py-2 text-sm font-medium rounded-l-md ${
-                !isYearly ? 'bg-black text-white border-2 border-white' : 'bg-white text-black'
+              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                !isYearly ? 'bg-white text-black' : 'text-white hover:bg-white/5'
               }`}
             >
               Monthly
             </button>
             <button
               onClick={() => setIsYearly(true)}
-              className={`px-4 py-2 text-sm font-medium rounded-r-md ${
-                isYearly ? 'bg-black text-white border-2 border-white' : 'bg-white text-black'
+              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                isYearly ? 'bg-white text-black' : 'text-white hover:bg-white/5'
               }`}
             >
               Yearly
             </button>
           </div>
-          {isYearly && (
-            <div className="mt-3">
-              <span className="text-yellow-500 text-sm font-medium">
-                Save 50% with yearly billing
-              </span>
-            </div>
-          )}
         </div>
 
-        <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 max-w-4xl mx-auto">
           {Object.entries(PRICING_PLANS).map(([key, plan]) => (
             <div
               key={key}
-              className={`relative flex flex-col p-8 bg-black  ${
+              className={`relative flex flex-col p-8 bg-black ${
                 plan.recommended
-                  ? 'border-2 border-yellow-500 shadow-[0_0_40px_-15px] shadow-yellow-500/30'
-                  : 'border-2 border-white'
+                  ? 'border-2 border-primary shadow-[0_0_40px_-15px] shadow-primary/30'
+                  : 'border border-white/20'
               }`}
             >
               {plan.recommended && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                  <span className="bg-yellow-500 text-black px-3 py-1 rounded-full text-sm font-medium">
+                  <span className="bg-primary text-black px-3 py-1 rounded-full text-sm font-medium">
                     Recommended
                   </span>
                 </div>
               )}
               <div className="flex justify-end">
                 <Box
-                  className={`h-8 w-8 ${plan.recommended ? 'text-yellow-500' : 'text-yellow-500'}`}
+                  className={`h-8 w-8 ${plan.recommended ? 'text-primary' : 'text-primary/50'}`}
                 />
               </div>
               <h3 className="text-xl font-bold text-white">{plan.name}</h3>
-              <div className="mt-4 flex items-baseline text-white justify-center">
+              <div className="mt-4 flex items-baseline text-white">
                 <span className="text-5xl font-extrabold tracking-tight">
-                  ${plan.monthly === 0 ? '0' : calculatePrice(plan.monthly).toFixed(2)}
+                  ${isYearly ? plan.yearly : plan.monthly}
                 </span>
-                <span className="ml-1 text-2xl">/{isYearly ? 'mo' : 'mo'}</span>
-                {isYearly && plan.monthly !== 0 && (
-                  <span className="ml-2 text-sm text-yellow-500">${49.99}/year</span>
+                <span className="ml-1 text-2xl">/{isYearly ? 'yr' : 'mo'}</span>
+                {isYearly && plan.recommended && (
+                  <span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary text-black">
+                    Save 50%
+                  </span>
                 )}
               </div>
               <div className="mt-6 flex-grow">
@@ -124,7 +118,7 @@ export function Pricing() {
                     <li key={index} className="flex items-start">
                       <svg
                         className={`h-6 w-6 mr-3 ${
-                          plan.recommended ? 'text-yellow-500' : 'text-yellow-500'
+                          plan.recommended ? 'text-primary' : 'text-primary/50'
                         }`}
                         fill="none"
                         viewBox="0 0 24 24"
@@ -142,15 +136,20 @@ export function Pricing() {
                   ))}
                 </ul>
               </div>
-              <button
-                className={`mt-8 w-full py-2 px-4  transition-colors ${
-                  plan.recommended
-                    ? 'bg-yellow-500 text-black hover:bg-yellow-400'
-                    : 'bg-black text-white border-2 border-white hover:bg-white hover:text-black'
-                }`}
-              >
-                Get started
-              </button>
+              {key === 'free' ? (
+                <button className="mt-8 w-full py-2 px-4 border-2 border-white text-white hover:bg-white hover:text-black transition-colors">
+                  Get started
+                </button>
+              ) : (
+                <div className="mt-8 w-full">
+                  <SubscribeButton
+                    plan={isYearly ? 'yearly' : 'monthly'}
+                    userSubscriptionStatus={userSubscriptionStatus}
+                    token={token}
+                    fullWidth
+                  />
+                </div>
+              )}
             </div>
           ))}
         </div>

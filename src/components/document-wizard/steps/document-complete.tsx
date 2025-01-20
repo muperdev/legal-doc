@@ -21,7 +21,7 @@ export function DocumentComplete({ isLoading, onBack, onDownload }: DocumentComp
         <div className="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center mb-4">
           <Check color="black" className="h-6 w-6 text-white" />
         </div>
-        <p className="text-gray-500 mb-8 text-center text-white">
+        <p className="mb-8 text-center text-white">
           Click the button below to download your document. You can also generate another document
           by going back.
         </p>

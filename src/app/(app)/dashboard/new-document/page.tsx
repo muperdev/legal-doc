@@ -110,8 +110,8 @@ export default async function NewDocumentPage() {
             companyName: client.companyName,
             address: client.address,
           }))}
-          onComplete={generateDocument}
-          onUpload={uploadDocument}
+          onCompleteAction={generateDocument}
+          onUploadAction={uploadDocument}
         />
       </div>
     </PageContainer>

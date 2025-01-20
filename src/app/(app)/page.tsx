@@ -6,9 +6,13 @@ import { Pricing } from '@/components/landing/pricing'
 import { Newsletter } from '@/components/landing/newsletter'
 import { Footer } from '@/components/landing/footer'
 import { currentUser } from '@/lib/auth'
+import { cookies } from 'next/headers'
 
 export default async function LandingPage() {
   const user = await currentUser()
+  const cookieStore = await cookies()
+  const token = cookieStore.get('payload-token')?.value || null
+
   return (
     <div className="min-h-screen bg-black">
       <div className="flex flex-col isolate p-4 gap-y-24">
@@ -16,7 +20,7 @@ export default async function LandingPage() {
         <Hero />
         <Features />
         <HowItWorks />
-        <Pricing />
+        <Pricing userSubscriptionStatus={user?.subscription?.status || null} token={token} />
         <Newsletter />
       </div>
       <Footer />
