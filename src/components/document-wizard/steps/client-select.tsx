@@ -37,7 +37,7 @@ export function ClientSelect({
           {clients.map((client) => (
             <div
               key={client.id}
-              className={`p-4 border rounded-lg cursor-pointer transition-colors ${
+              className={`p-4 border  cursor-pointer transition-colors ${
                 selectedClient === client.id
                   ? 'border-white bg-white/5'
                   : 'border-neutral-800/50 hover:border-white'

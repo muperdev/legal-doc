@@ -143,7 +143,7 @@ export function ClientTable({ initialClients }: ClientTableProps) {
         </Dialog>
       </div>
 
-      <div className="bg-black/40 rounded-lg border border-neutral-800 overflow-hidden">
+      <div className="bg-black/40  border border-neutral-800 overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow className="border-neutral-800 hover:bg-neutral-800/50">

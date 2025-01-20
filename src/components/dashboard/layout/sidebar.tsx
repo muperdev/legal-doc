@@ -1,10 +1,20 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { redirect, usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { LayoutDashboard, Users, FileText, Settings, CreditCard, LogOut } from 'lucide-react'
+import { LayoutDashboard, Users, Settings, CreditCard, LogOut } from 'lucide-react'
 import Image from 'next/image'
+
+const handleLogout = async () => {
+  await fetch(process.env.NEXT_PUBLIC_SERVER_URL + '/api/users/logout', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  redirect('/login')
+}
 
 const routes = [
   {
@@ -52,7 +62,7 @@ export function Sidebar() {
               key={route.href}
               href={route.href}
               className={cn(
-                'flex items-center gap-x-4 text-base font-medium py-3 px-4 rounded-lg transition-all duration-200',
+                'flex items-center gap-x-4 text-base font-medium py-3 px-4  transition-all duration-200',
                 pathname === route.href
                   ? 'text-black bg-primary'
                   : 'text-gray-300 hover:text-white hover:bg-white/5',
@@ -65,13 +75,13 @@ export function Sidebar() {
         </div>
       </div>
       <div className="mt-auto px-6 py-6 border-t border-neutral-800">
-        <Link
-          href="/logout"
-          className="flex items-center gap-x-4 text-base font-medium text-gray-300 hover:text-white transition-colors px-4 py-3 rounded-lg hover:bg-white/5"
+        <div
+          onClick={handleLogout}
+          className="flex items-center gap-x-4 text-base font-medium text-gray-300 hover:text-white transition-colors px-4 py-3  hover:bg-white/5"
         >
           <LogOut className="h-5 w-5" />
           Logout
-        </Link>
+        </div>
       </div>
     </div>
   )

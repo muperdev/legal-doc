@@ -1,11 +1,13 @@
 import { Navigation } from '@/components/landing/navigation'
 import { LegalPage } from '@/components/legal-page/page'
 import { Footer } from '@/components/landing/footer'
+import { currentUser } from '@/lib/auth'
 
-export default function RefundPolicyPage() {
+export default async function RefundPolicyPage() {
+  const user = await currentUser()
   return (
     <div className="flex-1 space-y-4 p-8 pt-6 blackHanSans bg-black min-h-screen">
-      <Navigation />
+      <Navigation authenticated={!!user} />
       <LegalPage title="Refund Policy">
         <p className="text-sm text-gray-400 mb-6">Effective Date: January 1, 2024</p>
 

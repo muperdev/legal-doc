@@ -48,20 +48,28 @@ async function generateDocument(data: { clientId: string; documentType: string }
 async function uploadDocument(file: File, user: User) {
   'use server'
   let result
+  const cookieStore = await cookies()
+  const token = cookieStore.get('payload-token')
+  if (!token) {
+    throw new Error('Unauthorized')
+  }
   try {
     const formData = new FormData()
     formData.append('file', file)
     const uploadDocument = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/documents`, {
       method: 'POST',
       body: formData,
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
     })
 
     if (!uploadDocument) {
       throw new Error('Failed to upload document')
     }
     result = await uploadDocument.json()
+    console.log(result)
   } catch (error) {
-    console.error('Error uploading document:', error)
     throw error
   }
 

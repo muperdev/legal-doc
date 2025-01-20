@@ -1,10 +1,11 @@
+import { isAdminOrSelf } from '@/access/is-admin-or-self'
 import type { CollectionConfig } from 'payload'
 
 export const Documents: CollectionConfig = {
   slug: 'documents',
   access: {
-    read: () => true,
-    create: () => true,
+    read: isAdminOrSelf,
+    create: isAdminOrSelf,
   },
   fields: [
     {

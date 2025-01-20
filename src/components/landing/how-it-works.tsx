@@ -50,7 +50,7 @@ export function HowItWorks() {
         </div>
 
         <div className="mt-16 flex justify-center gap-4">
-          <button className="inline-flex items-center px-6 py-3 border border-yellow-500 text-base font-medium rounded-md text-yellow-500 hover:bg-yellow-500 hover:text-black transition-colors">
+          <button className="inline-flex items-center px-6 py-3 border border-yellow-500 text-base font-medium  text-yellow-500 hover:bg-yellow-500 hover:text-black transition-colors">
             Start
           </button>
           <button className="inline-flex items-center px-6 py-3 text-base font-medium text-white">

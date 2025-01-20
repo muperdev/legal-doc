@@ -43,7 +43,7 @@ export default function LoginPage() {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-black/40 py-8 px-4 shadow sm:rounded-lg sm:px-10 border border-neutral-800">
+        <div className="bg-black/40 py-8 px-4 shadow sm:px-10 border border-neutral-800">
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-neutral-200">
@@ -54,7 +54,7 @@ export default function LoginPage() {
                   {...register('email')}
                   type="email"
                   autoComplete="email"
-                  className="appearance-none block w-full px-3 py-2 border border-neutral-800 bg-neutral-800/50 rounded-md shadow-sm placeholder-neutral-400 text-white focus:outline-none focus:ring-neutral-600 focus:border-neutral-600 sm:text-sm"
+                  className="appearance-none block w-full px-3 py-2 border border-neutral-800 bg-neutral-800/50 shadow-sm placeholder-neutral-400 text-white focus:outline-none focus:ring-neutral-600 focus:border-neutral-600 sm:text-sm"
                 />
                 {errors.email && (
                   <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
@@ -71,7 +71,7 @@ export default function LoginPage() {
                   {...register('password')}
                   type="password"
                   autoComplete="current-password"
-                  className="appearance-none block w-full px-3 py-2 border border-neutral-800 bg-neutral-800/50 rounded-md shadow-sm placeholder-neutral-400 text-white focus:outline-none focus:ring-neutral-600 focus:border-neutral-600 sm:text-sm"
+                  className="appearance-none block w-full px-3 py-2 border border-neutral-800 bg-neutral-800/50 shadow-sm placeholder-neutral-400 text-white focus:outline-none focus:ring-neutral-600 focus:border-neutral-600 sm:text-sm"
                 />
                 {errors.password && (
                   <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
@@ -94,7 +94,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full px-6 py-3 bg-primary text-black font-medium rounded-full shadow-lg hover:bg-neutral-200 hover:text-black focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-opacity-50 transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-6 py-3 bg-primary text-black font-medium hover:bg-neutral-200 hover:text-black focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-opacity-50 transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Signing in...' : 'Sign in'}
               </button>

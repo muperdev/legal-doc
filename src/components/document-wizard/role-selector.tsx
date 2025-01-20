@@ -33,7 +33,7 @@ export function RoleSelector({ onSelect, className }: RoleSelectorProps) {
           whileTap={{ scale: 0.98 }}
           onClick={() => handleSelect('provider')}
           className={cn(
-            'relative p-6 rounded-lg border border-gray-100 bg-white hover:bg-gray-50 transition-colors',
+            'relative p-6  border border-gray-100 bg-white hover:bg-gray-50 transition-colors',
             selectedRole === 'provider' && 'ring-2 ring-gray-900',
           )}
         >
@@ -60,7 +60,7 @@ export function RoleSelector({ onSelect, className }: RoleSelectorProps) {
           whileTap={{ scale: 0.98 }}
           onClick={() => handleSelect('client')}
           className={cn(
-            'relative p-6 rounded-lg border border-gray-100 bg-white hover:bg-gray-50 transition-colors',
+            'relative p-6  border border-gray-100 bg-white hover:bg-gray-50 transition-colors',
             selectedRole === 'client' && 'ring-2 ring-gray-900',
           )}
         >

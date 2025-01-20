@@ -16,7 +16,6 @@ export default async function Dashboard() {
   }
 
   const user = await currentUser()
-
   return (
     <PageContainer title="Dashboard">
       <div className="space-y-8">
@@ -50,7 +49,7 @@ export default async function Dashboard() {
             <h2 className="text-xl font-semibold text-white">Recent Documents</h2>
             <Link
               href="/dashboard/new-document"
-              className="inline-flex items-center rounded-lg bg-primary px-5 py-2 text-sm font-medium text-black shadow-md transition-all duration-200 hover:bg-[#e5c71e] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
+              className="inline-flex items-center  bg-primary px-5 py-2 text-sm font-medium text-black shadow-md transition-all duration-200 hover:bg-[#e5c71e] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
             >
               <Plus className="mr-2 h-5 w-5" />
               New Document

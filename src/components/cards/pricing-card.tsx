@@ -16,9 +16,7 @@ export function PricingCard({
   highlighted = false,
 }: PricingCardProps) {
   return (
-    <div
-      className={`rounded-lg shadow-lg overflow-hidden ${highlighted ? 'border-2 border-blue-500' : ''}`}
-    >
+    <div className={` shadow-lg overflow-hidden ${highlighted ? 'border-2 border-blue-500' : ''}`}>
       <div className="px-6 py-8 bg-black sm:p-10 sm:pb-6">
         <h3 className="text-2xl leading-8 font-extrabold text-white sm:text-3xl sm:leading-9">
           {title}
@@ -55,10 +53,10 @@ export function PricingCard({
           ))}
         </ul>
         <div className="mt-8">
-          <div className="rounded-lg shadow-md">
+          <div className=" shadow-md">
             <Link
               href="/signup"
-              className={`block w-full text-center rounded-lg border border-transparent px-6 py-3 text-base leading-6 font-medium ${
+              className={`block w-full text-center  border border-transparent px-6 py-3 text-base leading-6 font-medium ${
                 highlighted
                   ? 'bg-gradient-to-r from-primary-blue to-blue-600 text-white hover:from-blue-600 hover:to-primary-blue transition-all duration-200'
                   : 'bg-gradient-to-r from-gray-200 to-gray-300 text-gray-800 hover:from-gray-300 hover:to-gray-400'

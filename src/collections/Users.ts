@@ -1,3 +1,4 @@
+import { isAdminOrSelf } from '@/access/is-admin-or-self'
 import { CollectionConfig } from 'payload'
 
 export const Users: CollectionConfig = {
@@ -7,10 +8,10 @@ export const Users: CollectionConfig = {
     useAsTitle: 'email',
   },
   access: {
-    read: () => true,
+    read: isAdminOrSelf,
     create: () => true,
-    update: () => true,
-    delete: () => true,
+    update: isAdminOrSelf,
+    delete: isAdminOrSelf,
   },
   fields: [
     {

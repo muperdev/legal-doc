@@ -28,7 +28,7 @@ export default function SettingsPage() {
       </header>
 
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="bg-black shadow-sm rounded-lg">
+        <div className="bg-black shadow-sm ">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="account">Account</TabsTrigger>
@@ -95,7 +95,7 @@ function TeamsSettings() {
       <CardContent>
         <div className="space-y-4">
           {teams.map((team) => (
-            <div key={team.id} className="flex items-center justify-between p-4 border rounded-lg">
+            <div key={team.id} className="flex items-center justify-between p-4 border ">
               <div className="flex items-center space-x-4">
                 <Avatar>
                   <AvatarFallback>

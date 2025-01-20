@@ -29,7 +29,7 @@ export function RoleSelect({ selectedRole, setSelectedRole, onNext, error }: Rol
             whileTap={{ scale: 0.98 }}
             onClick={() => setSelectedRole('provider')}
             className={cn(
-              'relative p-6 rounded-lg border border-neutral-800/50 bg-black transition-colors',
+              'relative p-6  border border-neutral-800/50 bg-black transition-colors',
               selectedRole === 'provider' && 'ring-2 ring-white',
             )}
           >
@@ -56,7 +56,7 @@ export function RoleSelect({ selectedRole, setSelectedRole, onNext, error }: Rol
             whileTap={{ scale: 0.98 }}
             onClick={() => setSelectedRole('client')}
             className={cn(
-              'relative p-6 rounded-lg border border-neutral-800/50 bg-black transition-colors',
+              'relative p-6  border border-neutral-800/50 bg-black transition-colors',
               selectedRole === 'client' && 'ring-2 ring-white',
             )}
           >

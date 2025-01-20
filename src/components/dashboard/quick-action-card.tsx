@@ -13,9 +13,9 @@ export function QuickActionCard({ title, description, icon, href }: QuickActionC
   return (
     <Link
       href={href}
-      className="group block space-y-6 rounded-lg border border-neutral-800 bg-black p-6 transition-all duration-200 hover:border-primary/50"
+      className="group block space-y-6  border border-neutral-800 bg-black p-6 transition-all duration-200 hover:border-primary/50"
     >
-      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 transition-colors group-hover:bg-primary/20">
+      <div className="flex h-12 w-12 items-center justify-center  bg-primary/10 transition-colors group-hover:bg-primary/20">
         <div className="text-primary">{icon}</div>
       </div>
       <div>

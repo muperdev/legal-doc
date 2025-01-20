@@ -89,10 +89,15 @@ export function DocumentDetails({
             </div>
           ))}
         </div>
-        {error && <div className="mt-4 p-4 bg-red-50 text-red-600 rounded-md">{error}</div>}
+        {error && <div className="mt-4 p-4 bg-red-50 text-red-600 ">{error}</div>}
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button className="bg-black border-neutral-800/50" variant="outline" onClick={onBack} disabled={isLoading}>
+        <Button
+          className="bg-black border-neutral-800/50"
+          variant="outline"
+          onClick={onBack}
+          disabled={isLoading}
+        >
           Back
         </Button>
         <Button className="bg-white text-black" onClick={onNext} disabled={isLoading}>

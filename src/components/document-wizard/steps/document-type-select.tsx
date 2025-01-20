@@ -39,7 +39,7 @@ export function DocumentTypeSelect({
           {documentTypes.map((docType) => (
             <div
               key={docType.id}
-              className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
+              className={`p-4  border-2 cursor-pointer transition-all ${
                 selectedDocType === docType.id
                   ? 'border-white bg-white/5'
                   : 'border-neutral-800/50 hover:border-white'
@@ -56,13 +56,21 @@ export function DocumentTypeSelect({
             </div>
           ))}
         </div>
-        {error && <div className="mt-4 p-4 bg-red-50 text-red-600 rounded-md">{error}</div>}
+        {error && <div className="mt-4 p-4 bg-red-50 text-red-600 ">{error}</div>}
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button className="bg-black border-neutral-800/50 text-white" variant="outline" onClick={onBack}>
+        <Button
+          className="bg-black border-neutral-800/50 text-white"
+          variant="outline"
+          onClick={onBack}
+        >
           Back
         </Button>
-        <Button className="bg-white text-black hover:bg-neutral-800/50 hover:text-white hover:border-white" onClick={onNext} disabled={!selectedDocType}>
+        <Button
+          className="bg-white text-black hover:bg-neutral-800/50 hover:text-white hover:border-white"
+          onClick={onNext}
+          disabled={!selectedDocType}
+        >
           Next
         </Button>
       </CardFooter>
