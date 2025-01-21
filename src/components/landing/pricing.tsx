@@ -51,7 +51,7 @@ export function Pricing({
   token: string | null
 }) {
   const [isYearly, setIsYearly] = useState(false)
-
+  console.log(token)
   return (
     <div className="bg-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

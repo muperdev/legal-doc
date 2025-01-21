@@ -20,7 +20,7 @@ export async function POST(req: Request) {
       return new NextResponse('Unauthorized', { status: 401 })
     }
 
-    const user = await currentUser()
+    const user = await currentUser({ appliedToken: token })
     if (!user) {
       return new NextResponse('Unauthorized', { status: 401 })
     }

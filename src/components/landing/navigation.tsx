@@ -102,6 +102,12 @@ export function Navigation({ authenticated }: { authenticated: boolean }) {
               >
                 Gimme a Doc
               </Link>
+              <Link
+                href="/dashboard"
+                className="bg-black border-primary border px-5 py-2 text-sm font-medium text-white shadow-md transition-all duration-200 hover:bg-[#e5c71e] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
+              >
+                Dashboard
+              </Link>
             </div>
           ) : (
             <div className="hidden md:flex items-center space-x-4">

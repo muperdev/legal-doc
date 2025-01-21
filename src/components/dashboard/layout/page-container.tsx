@@ -7,6 +7,7 @@ interface PageContainerProps {
   title: string
   backUrl?: string
   showSubscribeButton?: boolean
+  token?: string | null
 }
 
 export function PageContainer({
@@ -14,6 +15,7 @@ export function PageContainer({
   title,
   backUrl,
   showSubscribeButton,
+  token,
 }: PageContainerProps) {
   return (
     <div className="flex-1 overflow-auto bg-black">
@@ -31,7 +33,7 @@ export function PageContainer({
               )}
               <h1 className="text-3xl font-bold text-white">{title}</h1>
             </div>
-            {showSubscribeButton && <SubscribeButton />}
+            {showSubscribeButton && <SubscribeButton token={token} />}
           </div>
         </div>
       </header>
