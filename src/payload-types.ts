@@ -82,25 +82,10 @@ export interface User {
     stripeCurrentPeriodEnd?: string | null;
     status?: ('active' | 'canceled' | 'past_due' | 'trialing' | 'incomplete' | 'incomplete_expired') | null;
     plan?: ('free' | 'pro_monthly' | 'pro_yearly' | 'appsumo_lifetime') | null;
-    /**
-     * AppSumo License ID
-     */
     appsumoLicenseId?: string | null;
-    /**
-     * AppSumo Access Token
-     */
-    appsumoAccessToken?: string | null;
-    /**
-     * AppSumo Refresh Token
-     */
-    appsumoRefreshToken?: string | null;
-    /**
-     * When the AppSumo license was activated
-     */
+    appsumoTier?: string | null;
+    appsumoActivationCode?: string | null;
     appsumoActivatedAt?: string | null;
-    /**
-     * Additional data from AppSumo webhooks
-     */
     appsumoWebhookData?:
       | {
           [k: string]: unknown;
@@ -243,8 +228,8 @@ export interface UsersSelect<T extends boolean = true> {
         status?: T;
         plan?: T;
         appsumoLicenseId?: T;
-        appsumoAccessToken?: T;
-        appsumoRefreshToken?: T;
+        appsumoTier?: T;
+        appsumoActivationCode?: T;
         appsumoActivatedAt?: T;
         appsumoWebhookData?: T;
       };

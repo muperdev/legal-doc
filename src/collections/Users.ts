@@ -132,23 +132,20 @@ export const Users: CollectionConfig = {
           type: 'text',
           admin: {
             readOnly: true,
-            description: 'AppSumo License ID',
           },
         },
         {
-          name: 'appsumoAccessToken',
+          name: 'appsumoTier',
           type: 'text',
           admin: {
             readOnly: true,
-            description: 'AppSumo Access Token',
           },
         },
         {
-          name: 'appsumoRefreshToken',
+          name: 'appsumoActivationCode',
           type: 'text',
           admin: {
             readOnly: true,
-            description: 'AppSumo Refresh Token',
           },
         },
         {
@@ -156,7 +153,6 @@ export const Users: CollectionConfig = {
           type: 'date',
           admin: {
             readOnly: true,
-            description: 'When the AppSumo license was activated',
           },
         },
         {
@@ -164,7 +160,6 @@ export const Users: CollectionConfig = {
           type: 'json',
           admin: {
             readOnly: true,
-            description: 'Additional data from AppSumo webhooks',
           },
         },
       ],

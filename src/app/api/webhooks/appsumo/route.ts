@@ -9,7 +9,7 @@ const APPSUMO_WEBHOOK_SECRET = process.env.APPSUMO_WEBHOOK_SECRET
 
 export async function POST(req: Request) {
   try {
-    const headersList = headers()
+    const headersList = await headers()
     const signature = headersList.get('X-AppSumo-Signature')
     const body = await req.text() // Get raw body for signature verification
 
@@ -63,7 +63,7 @@ export async function POST(req: Request) {
               appsumoActivationCode: activation_code,
               appsumoTier: tier,
               appsumoActivatedAt: new Date().toISOString(),
-              appsumoWebhookData: event,
+              appsumoWebhookData: JSON.stringify(event),
             },
           },
         })
@@ -77,7 +77,7 @@ export async function POST(req: Request) {
             subscription: {
               ...currentSubscription,
               status: 'canceled',
-              appsumoWebhookData: event,
+              appsumoWebhookData: JSON.stringify(event),
             },
           },
         })
@@ -92,7 +92,7 @@ export async function POST(req: Request) {
             subscription: {
               ...currentSubscription,
               appsumoTier: tier,
-              appsumoWebhookData: event,
+              appsumoWebhookData: JSON.stringify(event),
             },
           },
         })

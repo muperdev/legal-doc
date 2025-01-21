@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { CheckCircle2, XCircle } from 'lucide-react'
@@ -18,7 +18,7 @@ interface LicenseData {
   email?: string
 }
 
-export default function AppSumoRedemptionPage() {
+function AppSumoRedemptionContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [step, setStep] = useState<AuthStep>('loading')
@@ -347,5 +347,28 @@ export default function AppSumoRedemptionPage() {
         </Card>
       </div>
     </div>
+  )
+}
+
+export default function AppSumoRedemptionPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-black flex items-center justify-center p-4">
+          <div className="max-w-md w-full">
+            <Card className="bg-black border border-neutral-800">
+              <CardHeader>
+                <CardTitle className="text-white">Loading...</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-300">Please wait while we load the page...</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      }
+    >
+      <AppSumoRedemptionContent />
+    </Suspense>
   )
 }
