@@ -83,6 +83,7 @@ export async function POST(req: Request) {
         ],
         success_url: `${baseUrl}/dashboard/subscription/status?success=true`,
         cancel_url: `${baseUrl}/dashboard/subscription/status?canceled=true`,
+        client_reference_id: user.id.toString(),
         metadata: {
           userId: user.id,
         },
