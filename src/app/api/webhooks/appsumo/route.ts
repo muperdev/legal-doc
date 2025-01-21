@@ -2,42 +2,25 @@ import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import crypto from 'crypto'
 import type { AppSumoWebhookEvent } from '@/types/appsumo'
-
-const APPSUMO_WEBHOOK_SECRET = process.env.APPSUMO_WEBHOOK_SECRET
 
 export async function POST(req: Request) {
   try {
-    const headersList = await headers()
-    const signature = headersList.get('X-AppSumo-Signature')
-    const body = await req.text() // Get raw body for signature verification
+    const body = await req.text()
+    const event = JSON.parse(body)
 
-    if (!signature || !APPSUMO_WEBHOOK_SECRET) {
-      return new NextResponse('Unauthorized', { status: 401 })
-    }
-
-    // Verify webhook signature
-    const hmac = crypto.createHmac('sha256', APPSUMO_WEBHOOK_SECRET)
-    hmac.update(body)
-    const calculatedSignature = hmac.digest('hex')
-
-    if (calculatedSignature !== signature) {
-      return new NextResponse('Invalid signature', { status: 401 })
-    }
-
-    const event = JSON.parse(body) as AppSumoWebhookEvent
-
-    // Handle test webhook events
+    // Handle test webhook
     if (event.test === true) {
-      return new NextResponse(JSON.stringify({ success: true }), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' },
+      return NextResponse.json({
+        success: true,
+        event: event.event || 'test',
       })
     }
 
+    // Handle regular webhook
     const payload = await getPayload({ config })
-    const { event_type, license_id, license_key, prev_license_key, tier, email } = event
+    const { event_type, license_id, license_key, prev_license_key, tier, email } =
+      event as AppSumoWebhookEvent
 
     // Find user by current or previous license key
     const users = await payload.find({
@@ -130,7 +113,7 @@ export async function POST(req: Request) {
             data: {
               subscription: {
                 ...currentSubscription,
-                appsumoLicenseKey: license_key, // Update to new license key
+                appsumoLicenseKey: license_key,
                 appsumoTier: tier,
                 appsumoWebhookData: JSON.stringify(event),
               },
@@ -143,16 +126,18 @@ export async function POST(req: Request) {
         console.log('Unhandled AppSumo event type:', event_type)
     }
 
-    // Return success response
-    return new NextResponse(JSON.stringify({ success: true }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
+    return NextResponse.json({
+      success: true,
+      event: event_type,
     })
   } catch (error) {
     console.error('AppSumo webhook error:', error)
-    return new NextResponse(JSON.stringify({ success: false, error: 'Webhook handler failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    })
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Webhook handler failed',
+      },
+      { status: 500 },
+    )
   }
 }
