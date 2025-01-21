@@ -114,6 +114,59 @@ export const Users: CollectionConfig = {
             readOnly: true,
           },
         },
+        {
+          name: 'plan',
+          type: 'select',
+          options: [
+            { label: 'Free', value: 'free' },
+            { label: 'Pro Monthly', value: 'pro_monthly' },
+            { label: 'Pro Yearly', value: 'pro_yearly' },
+            { label: 'AppSumo Lifetime', value: 'appsumo_lifetime' },
+          ],
+          admin: {
+            readOnly: true,
+          },
+        },
+        {
+          name: 'appsumoLicenseId',
+          type: 'text',
+          admin: {
+            readOnly: true,
+            description: 'AppSumo License ID',
+          },
+        },
+        {
+          name: 'appsumoAccessToken',
+          type: 'text',
+          admin: {
+            readOnly: true,
+            description: 'AppSumo Access Token',
+          },
+        },
+        {
+          name: 'appsumoRefreshToken',
+          type: 'text',
+          admin: {
+            readOnly: true,
+            description: 'AppSumo Refresh Token',
+          },
+        },
+        {
+          name: 'appsumoActivatedAt',
+          type: 'date',
+          admin: {
+            readOnly: true,
+            description: 'When the AppSumo license was activated',
+          },
+        },
+        {
+          name: 'appsumoWebhookData',
+          type: 'json',
+          admin: {
+            readOnly: true,
+            description: 'Additional data from AppSumo webhooks',
+          },
+        },
       ],
     },
   ],
