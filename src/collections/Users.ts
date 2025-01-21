@@ -109,6 +109,7 @@ export const Users: CollectionConfig = {
             { label: 'Trialing', value: 'trialing' },
             { label: 'Incomplete', value: 'incomplete' },
             { label: 'Incomplete Expired', value: 'incomplete_expired' },
+            { label: 'Inactive', value: 'inactive' },
           ],
           admin: {
             readOnly: true,
@@ -129,6 +130,13 @@ export const Users: CollectionConfig = {
         },
         {
           name: 'appsumoLicenseId',
+          type: 'text',
+          admin: {
+            readOnly: true,
+          },
+        },
+        {
+          name: 'appsumoLicenseKey',
           type: 'text',
           admin: {
             readOnly: true,

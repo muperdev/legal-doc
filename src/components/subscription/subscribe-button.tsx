@@ -13,6 +13,7 @@ export type SubscriptionStatusTypes =
   | 'trialing'
   | 'incomplete'
   | 'incomplete_expired'
+  | 'inactive'
   | null
 
 interface SubscribeButtonProps {

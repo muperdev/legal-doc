@@ -80,9 +80,12 @@ export interface User {
     stripeSubscriptionId?: string | null;
     stripePriceId?: string | null;
     stripeCurrentPeriodEnd?: string | null;
-    status?: ('active' | 'canceled' | 'past_due' | 'trialing' | 'incomplete' | 'incomplete_expired') | null;
+    status?:
+      | ('active' | 'canceled' | 'past_due' | 'trialing' | 'incomplete' | 'incomplete_expired' | 'inactive')
+      | null;
     plan?: ('free' | 'pro_monthly' | 'pro_yearly' | 'appsumo_lifetime') | null;
     appsumoLicenseId?: string | null;
+    appsumoLicenseKey?: string | null;
     appsumoTier?: string | null;
     appsumoActivationCode?: string | null;
     appsumoActivatedAt?: string | null;
@@ -228,6 +231,7 @@ export interface UsersSelect<T extends boolean = true> {
         status?: T;
         plan?: T;
         appsumoLicenseId?: T;
+        appsumoLicenseKey?: T;
         appsumoTier?: T;
         appsumoActivationCode?: T;
         appsumoActivatedAt?: T;

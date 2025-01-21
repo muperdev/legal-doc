@@ -47,7 +47,7 @@ export function Pricing({
   userSubscriptionStatus,
   token,
 }: {
-  userSubscriptionStatus: SubscriptionStatusTypes
+  userSubscriptionStatus: SubscriptionStatusTypes | null
   token: string | null
 }) {
   const [isYearly, setIsYearly] = useState(false)
