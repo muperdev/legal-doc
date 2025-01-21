@@ -23,54 +23,76 @@ type SubscriptionStatus =
   | 'inactive'
 
 export async function POST(req: Request) {
+  const body = await req.text()
+  const sig = req.headers.get('stripe-signature')
+
+  if (!sig) {
+    return new NextResponse('No signature found', { status: 400 })
+  }
+
+  let event: Stripe.Event
+
   try {
-    const body = await req.json()
-    const event = body as any
-    const session = event.object
-    console.log(`✅ Received webhook event: ${event.type}`)
+    event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET!)
+  } catch (err: any) {
+    console.error('❌ Webhook signature verification failed:', err.message)
+    return new NextResponse(`Webhook Error: ${err.message}`, { status: 400 })
+  }
 
+  console.log(`✅ Received webhook event: ${event.type}`)
+
+  try {
     switch (event.type) {
-      case 'checkout.session.completed':
-        const subscription = await stripe.subscriptions.retrieve(session.subscription)
+      case 'checkout.session.completed': {
+        const session = event.data.object as Stripe.Checkout.Session
+        const subscription = await stripe.subscriptions.retrieve(session.subscription as string)
 
-        await updateUserSubscription(session.metadata.userId || session.client_reference_id, {
+        await updateUserSubscription(session.metadata?.userId || session.client_reference_id!, {
           stripeSubscriptionId: subscription.id,
           stripePriceId: subscription.items.data[0].price.id,
           stripeCurrentPeriodEnd: new Date(subscription.current_period_end * 1000),
           status: subscription.status as SubscriptionStatus,
         })
         break
+      }
 
-      case 'invoice.payment_succeeded':
-        if (session.billing_reason === 'subscription_cycle') {
-          console.log(`🔄 Processing subscription renewal: ${session.subscription}`)
-          const subscription = await stripe.subscriptions.retrieve(session.subscription)
+      case 'invoice.payment_succeeded': {
+        const invoice = event.data.object as Stripe.Invoice
+        if (invoice.billing_reason === 'subscription_cycle') {
+          console.log(`🔄 Processing subscription renewal: ${invoice.subscription}`)
+          const subscription = await stripe.subscriptions.retrieve(invoice.subscription as string)
 
           await updateUserSubscription(
-            subscription.metadata.userId || session.client_reference_id,
+            subscription.metadata?.userId || (invoice.customer as string),
             {
               stripePriceId: subscription.items.data[0].price.id,
               stripeCurrentPeriodEnd: new Date(subscription.current_period_end * 1000),
               status: 'active',
             },
           )
-          console.log(`✅ Updated subscription renewal for user ${subscription.metadata.userId}`)
+          console.log(`✅ Updated subscription renewal for user ${subscription.metadata?.userId}`)
         }
         break
+      }
 
       case 'customer.subscription.updated':
-      case 'customer.subscription.deleted':
-        console.log(`🔄 Processing subscription update/deletion: ${session.id}`)
-        await updateUserSubscription(session.metadata.userId || session.client_reference_id, {
-          stripePriceId: session.items.data[0].price.id,
-          stripeCurrentPeriodEnd: new Date(session.current_period_end * 1000),
-          status: session.status as SubscriptionStatus,
-        })
-        console.log(`✅ Updated subscription status for user ${session.metadata.userId}`)
+      case 'customer.subscription.deleted': {
+        const subscription = event.data.object as Stripe.Subscription
+        console.log(`🔄 Processing subscription update/deletion: ${subscription.id}`)
+        await updateUserSubscription(
+          subscription.metadata?.userId || (subscription.customer as string),
+          {
+            stripePriceId: subscription.items.data[0].price.id,
+            stripeCurrentPeriodEnd: new Date(subscription.current_period_end * 1000),
+            status: subscription.status as SubscriptionStatus,
+          },
+        )
+        console.log(`✅ Updated subscription status for user ${subscription.metadata?.userId}`)
         break
+      }
 
       default:
-        console.log(`⚠️ Unhandled event type: ${session.type}`)
+        console.log(`⚠️ Unhandled event type: ${event.type}`)
     }
 
     return new NextResponse(null, { status: 200 })
