@@ -25,16 +25,16 @@ interface SubscribeButtonProps {
 }
 
 // Live mode price IDs
-// const STRIPE_PRICES = {
-//   monthly: 'price_1QijDuGEdf9C6VIlUuqNCPgk',
-//   yearly: 'price_1QijDuGEdf9C6VIlt9usUfwH',
-// }
+const STRIPE_PRICES = {
+  monthly: 'price_1QijDuGEdf9C6VIlUuqNCPgk',
+  yearly: 'price_1QijDuGEdf9C6VIlt9usUfwH',
+}
 
 // Test mode price IDs
-const STRIPE_PRICES = {
-  monthly: 'price_1QjQah4MPi0gofik6s2Gb3Rm',
-  yearly: 'price_1QjQb44MPi0gofik5WXjsEef',
-}
+// const STRIPE_PRICES = {
+//   monthly: 'price_1QjQah4MPi0gofik6s2Gb3Rm',
+//   yearly: 'price_1QjQb44MPi0gofik5WXjsEef',
+// }
 
 export function SubscribeButton({
   isManageSubscription,
