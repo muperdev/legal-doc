@@ -4,10 +4,11 @@ import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { login, setAuthToken } from '@/lib/client-auth'
+import { login } from '@/lib/client-auth'
 import { loginSchema, type LoginFormData } from '@/lib/validations/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -24,11 +25,12 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginFormData) => {
     try {
       setLoading(true)
-      const response = await login(data)
-      setAuthToken(response.token)
+      await login(data)
+      toast.success('Successfully logged in')
       router.push('/dashboard')
     } catch (error) {
       console.error('Login failed:', error)
+      toast.error(error instanceof Error ? error.message : 'Failed to log in')
     } finally {
       setLoading(false)
     }

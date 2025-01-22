@@ -22,7 +22,7 @@ const PRICING_PLANS: Record<string, PricingPlan> = {
     yearly: 0,
     features: [
       'Access to 10 most-used document templates',
-      '5 documents per month',
+      '5 documents Limit',
       'Basic template customization',
       'PDF export option',
     ],
@@ -143,7 +143,7 @@ export function Pricing({
               ) : (
                 <div className="mt-8 w-full">
                   <SubscribeButton
-                    plan={isYearly ? 'yearly' : 'monthly'}
+                    plan={isYearly ? 'pro_yearly' : 'pro_monthly'}
                     userSubscriptionStatus={userSubscriptionStatus}
                     token={token}
                     fullWidth

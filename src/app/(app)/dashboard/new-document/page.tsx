@@ -74,13 +74,34 @@ async function uploadDocument(file: File, user: User) {
   }
 
   try {
-    await payload.update({
-      collection: 'users',
-      id: user.id,
-      data: {
-        documents: [...(user.documents || []), result.doc.id],
-      },
-    })
+    if (user.subscription?.status === 'active') {
+      await payload.update({
+        collection: 'users',
+        id: user.id,
+        data: {
+          documents: [...(user.documents || []), result.doc.id],
+        },
+      })
+    } else if (user.subscriptionLimit === 1) {
+      await payload.update({
+        collection: 'users',
+        id: user.id,
+        data: {
+          documents: [...(user.documents || []), result.doc.id],
+          subscriptionLimit: 0,
+          exceededLimit: true,
+        },
+      })
+    } else {
+      await payload.update({
+        collection: 'users',
+        id: user.id,
+        data: {
+          documents: [...(user.documents || []), result.doc.id],
+          subscriptionLimit: (user.subscriptionLimit || 5) - 1,
+        },
+      })
+    }
     return true
   } catch (error) {
     console.error('Error uploading document:', error)

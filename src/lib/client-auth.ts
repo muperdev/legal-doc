@@ -1,6 +1,8 @@
-'use client'
-
-import { User } from "@/payload-types"
+'use server'
+import { getPayload } from 'payload'
+import config from '@payload-config'
+import { cookies } from 'next/headers'
+import { User } from '@/payload-types'
 
 export type LoginFormData = {
   email: string
@@ -16,38 +18,56 @@ export type SignupFormData = LoginFormData & {
 }
 
 export async function login(data: LoginFormData) {
-  const response = await fetch('/api/auth/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  })
+  try {
+    const { email, password } = data
+    const payload = await getPayload({ config })
 
-  if (!response.ok) {
-    throw new Error('Login failed')
+    const result = await payload.login({
+      collection: 'users',
+      data: {
+        email,
+        password,
+      },
+    })
+
+    if (result?.token) {
+      const cookieStore = await cookies()
+      cookieStore.set('payload-token', result.token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 30 * 60, // 30 minutes
+      })
+    }
+
+    return result
+  } catch (error) {
+    console.error('Login error:', error)
+    throw new Error('Authentication failed')
   }
-
-  return response.json()
 }
 
 export async function signup(data: SignupFormData) {
-  const response = await fetch('/api/auth/signup', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  })
+  try {
+    const payload = await getPayload({ config })
 
-  if (!response.ok) {
-    throw new Error('Signup failed')
+    const result = await payload.create({
+      collection: 'users',
+      data: {
+        email: data.email,
+        password: data.password,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        role: 'user',
+      },
+    })
+    
+    const loginResult = await login({ email: data.email, password: data.password })
+
+    return loginResult
+  } catch (error) {
+    console.error('Signup error:', error)
+    throw new Error('Failed to create account')
   }
-
-  return response.json()
-}
-
-export function setAuthToken(token: string): void {
-  const thirtyDays = 30 * 24 * 60 * 60
-  document.cookie = `payload-token=${token}; path=/; max-age=${thirtyDays}`
 }

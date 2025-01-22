@@ -2,10 +2,12 @@ import Link from 'next/link'
 import { FileText, Plus, BarChart, Users, ShieldCheck } from 'lucide-react'
 import { StatCard } from '@/components/dashboard/stat-card'
 import { QuickActionCard } from '@/components/dashboard/quick-action-card'
-import { DocumentList } from '@/components/dashboard/document-list'
+import { DocumentListWrapper } from '@/components/dashboard/document-list-wrapper'
 import { PageContainer } from '@/components/dashboard/layout/page-container'
 import { cookies } from 'next/headers'
 import { currentUser } from '@/lib/auth'
+import { isSubscribed } from '@/lib/subscription-checker'
+import { User } from '@/payload-types'
 
 export default async function Dashboard() {
   const cookieStore = await cookies()
@@ -15,13 +17,14 @@ export default async function Dashboard() {
   }
 
   const user = await currentUser()
+  if (!user) return null
+
   return (
     <PageContainer
       token={token.value}
       title="Dashboard"
       showSubscribeButton={
-        user?.subscription?.status === 'incomplete' ||
-        user?.subscription?.status === 'canceled'
+        user?.subscription?.status === 'incomplete' || user?.subscription?.status === 'canceled'
       }
     >
       <div className="space-y-8">
@@ -61,7 +64,7 @@ export default async function Dashboard() {
               New Document
             </Link>
           </div>
-          <DocumentList
+          <DocumentListWrapper
             documents={
               user?.documents?.map((doc) => ({
                 id: (doc as any).id,
@@ -72,6 +75,7 @@ export default async function Dashboard() {
                 createdAt: (doc as any).createdAt || new Date().toISOString(),
               })) || []
             }
+            isSubscribed={isSubscribed(user as User)}
           />
         </div>
 

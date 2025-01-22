@@ -1,7 +1,12 @@
 import { PageContainer } from '@/components/dashboard/layout/page-container'
-import { Pricing } from '@/components/subscription/pricing'
+import { Pricing } from '@/components/landing/pricing'
+import { cookies } from 'next/headers'
+import { currentUser } from '@/lib/auth'
 
-export default function SubscriptionPage() {
+export default async function SubscriptionPage() {
+  const user = await currentUser()
+  const cookieStore = await cookies()
+  const token = cookieStore.get('payload-token')?.value || null
   return (
     <PageContainer title="Subscription Plans">
       <div className="max-w-5xl mx-auto">
@@ -11,7 +16,7 @@ export default function SubscriptionPage() {
             Select the plan that best fits your needs. All plans include our core features.
           </p>
         </div>
-        <Pricing />
+        <Pricing userSubscriptionStatus={user?.subscription?.status || null} token={token} />
       </div>
     </PageContainer>
   )

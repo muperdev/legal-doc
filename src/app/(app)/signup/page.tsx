@@ -4,10 +4,11 @@ import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { signup, setAuthToken } from '@/lib/client-auth'
+import { signup } from '@/lib/client-auth'
 import { signupSchema, type SignupFormData } from '@/lib/validations/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 export default function SignupPage() {
   const router = useRouter()
@@ -24,11 +25,12 @@ export default function SignupPage() {
   const onSubmit = async (data: SignupFormData) => {
     try {
       setLoading(true)
-      const response = await signup(data)
-      setAuthToken(response.token)
+      await signup(data)
+      toast.success('Account created successfully')
       router.push('/dashboard')
     } catch (error) {
       console.error('Signup failed:', error)
+      toast.error(error instanceof Error ? error.message : 'Failed to create account')
     } finally {
       setLoading(false)
     }

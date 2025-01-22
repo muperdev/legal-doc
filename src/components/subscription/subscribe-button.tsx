@@ -5,6 +5,7 @@ import { AnimatedButton } from '@/components/ui/animated-button'
 import { CreditCard } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { usePathname, useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 export type SubscriptionStatusTypes =
   | 'active'
@@ -18,7 +19,13 @@ export type SubscriptionStatusTypes =
 
 interface SubscribeButtonProps {
   isManageSubscription?: boolean
-  plan?: 'monthly' | 'yearly'
+  plan?:
+    | 'free'
+    | 'pro_monthly'
+    | 'pro_yearly'
+    | 'appsumo_lifetime'
+    | 'appsumo_monthly'
+    | 'appsumo_yearly'
   userSubscriptionStatus?: SubscriptionStatusTypes
   fullWidth?: boolean
   token?: string | null
@@ -38,61 +45,61 @@ const STRIPE_PRICES = {
 
 export function SubscribeButton({
   isManageSubscription,
-  plan = 'monthly',
+  plan = 'pro_monthly',
   userSubscriptionStatus,
   fullWidth = false,
   token,
 }: SubscribeButtonProps) {
   const [loading, setLoading] = useState(false)
   const pathname = usePathname()
-  const router = useRouter()
-
   const handleSubscription = async () => {
     try {
       setLoading(true)
 
-      if (!token) {
-        router.push('/login')
-        return
-      }
-      // Handle different subscription states
-      if (userSubscriptionStatus === 'active') {
-        router.push('/dashboard')
-        return
-      }
-
-      // Go to customer portal for past_due
-      if (isManageSubscription || userSubscriptionStatus === 'past_due') {
-        const response = await fetch('/api/stripe', {
+      // Create portal session for active subscriptions or management
+      if (userSubscriptionStatus === 'active' || isManageSubscription) {
+        const response = await fetch('/api/stripe/portal', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: token ? `Bearer ${token}` : '',
+            Authorization: `Bearer ${token}`,
           },
         })
-        const data = await response.json()
-        if (data.url) {
-          window.location.href = data.url
+
+        if (!response.ok) {
+          throw new Error('Failed to create portal session')
+        }
+
+        const { url } = await response.json()
+        if (url) {
+          window.location.href = url
         }
         return
       }
 
-      // For all other cases (incomplete, canceled, incomplete_expired, trialing, or no subscription)
-      // proceed to checkout
-      const response = await fetch(`/api/stripe?priceId=${STRIPE_PRICES[plan]}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token ? `Bearer ${token}` : '',
+      // For new subscriptions or reactivations, create checkout session
+      const response = await fetch(
+        `/api/stripe/checkout?priceId=${STRIPE_PRICES[plan as keyof typeof STRIPE_PRICES]}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
         },
-      })
+      )
 
-      const data = await response.json()
-      if (data.url) {
-        window.location.href = data.url
+      if (!response.ok) {
+        throw new Error('Failed to create checkout session')
+      }
+
+      const { url } = await response.json()
+      if (url) {
+        window.location.href = url
       }
     } catch (error) {
       console.error('Error:', error)
+      toast.error('Failed to process subscription request')
     } finally {
       setLoading(false)
     }
@@ -106,7 +113,7 @@ export function SubscribeButton({
 
     switch (userSubscriptionStatus) {
       case 'active':
-        return 'Go to Dashboard'
+        return 'Manage Subscription'
       case 'past_due':
         return 'Update Payment Method'
       case 'incomplete':
@@ -115,7 +122,7 @@ export function SubscribeButton({
       case 'canceled':
         return 'Reactivate Subscription ⚡️'
       default:
-        return `Go Pro ${plan === 'yearly' ? 'Yearly' : 'Monthly'} ⚡️`
+        return `Go Pro ${plan === 'pro_yearly' ? 'Yearly' : 'Monthly'} ⚡️`
     }
   }
 

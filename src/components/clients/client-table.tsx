@@ -41,6 +41,16 @@ export function ClientTable({ initialClients }: ClientTableProps) {
   })
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
+  const filteredClients = initialClients.filter((client) => {
+    const searchLower = searchTerm.toLowerCase()
+    return (
+      (client?.companyName?.toLowerCase() || '').includes(searchLower) ||
+      (client?.name?.toLowerCase() || '').includes(searchLower) ||
+      (client?.email?.toLowerCase() || '').includes(searchLower) ||
+      (client?.phoneNumber?.toLowerCase() || '').includes(searchLower)
+    )
+  })
+
   const handleAddClient = async () => {
     try {
       const response = await fetch('/api/clients', {
@@ -81,14 +91,6 @@ export function ClientTable({ initialClients }: ClientTableProps) {
           <Search className="absolute left-3 top-2.5 h-5 w-5 text-neutral-400" />
         </div>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button
-              variant="outline"
-              className="bg-neutral-800 border-neutral-700 text-white hover:bg-neutral-700 hover:text-white"
-            >
-              <Plus className="mr-2 h-4 w-4" /> Add Client
-            </Button>
-          </DialogTrigger>
           <DialogContent className="bg-neutral-900 border border-neutral-800 text-white">
             <DialogHeader>
               <DialogTitle className="text-lg font-semibold">Add New Client</DialogTitle>
@@ -153,7 +155,7 @@ export function ClientTable({ initialClients }: ClientTableProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {initialClients.map((client) => (
+            {filteredClients.map((client) => (
               <TableRow key={client?.id} className="border-neutral-800 hover:bg-neutral-800/50">
                 <TableCell className="font-medium text-white">
                   {client?.companyName || client?.name}
@@ -162,6 +164,13 @@ export function ClientTable({ initialClients }: ClientTableProps) {
                 <TableCell className="text-neutral-200">{client?.phoneNumber}</TableCell>
               </TableRow>
             ))}
+            {filteredClients.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={3} className="h-24 text-center text-neutral-400">
+                  No clients found.
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </div>

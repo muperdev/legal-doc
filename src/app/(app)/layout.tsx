@@ -2,6 +2,7 @@ import './globals.css'
 import { Black_Han_Sans, Open_Sans } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 import { CSPostHogProvider } from './provider'
+import { ToastProvider } from '@/components/providers/toast-provider'
 
 const blackHanSans = Black_Han_Sans({
   subsets: ['latin'],
@@ -30,6 +31,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         >
           {children}
           <Analytics />
+          <ToastProvider />
         </body>
       </CSPostHogProvider>
     </html>

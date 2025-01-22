@@ -3,9 +3,11 @@
 import Link from 'next/link'
 import { redirect, usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { LayoutDashboard, Users, Settings, CreditCard, LogOut } from 'lucide-react'
+import { LayoutDashboard, Users, Settings, LogOut, FilePlus } from 'lucide-react'
 import Image from 'next/image'
 import { SubscribeButton } from '@/components/subscription/subscribe-button'
+import { User } from '@/payload-types'
+import { isSubscribed } from '@/lib/subscription-checker'
 
 const handleLogout = async () => {
   await fetch(process.env.NEXT_PUBLIC_SERVER_URL + '/api/users/logout', {
@@ -24,18 +26,23 @@ const routes = [
     href: '/dashboard',
   },
   {
+    label: 'New Document',
+    icon: FilePlus,
+    href: '/dashboard/new-document',
+  },
+  {
     label: 'Clients',
     icon: Users,
     href: '/dashboard/clients',
   },
-  {
-    label: 'Settings',
-    icon: Settings,
-    href: '/dashboard/settings',
-  },
+  // {
+  //   label: 'Settings',
+  //   icon: Settings,
+  //   href: '/dashboard/settings',
+  // },
 ]
 
-export function Sidebar() {
+export function Sidebar({ user }: { user: User }) {
   const pathname = usePathname()
 
   return (
@@ -69,7 +76,11 @@ export function Sidebar() {
             </Link>
           ))}
           <div className="py-2">
-            <SubscribeButton isManageSubscription />
+            <SubscribeButton
+              userSubscriptionStatus={user?.subscription?.status || null}
+              plan={user?.subscription?.plan || 'pro_monthly'}
+              isManageSubscription={isSubscribed(user)}
+            />
           </div>
         </div>
       </div>

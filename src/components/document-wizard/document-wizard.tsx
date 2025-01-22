@@ -15,7 +15,9 @@ import { DocumentDetails } from './steps/document-details'
 import { DocumentComplete } from './steps/document-complete'
 import { RoleSelect } from './steps/role-select'
 import { generatePDF } from '@/lib/pdf/generate-pdf'
+import { generateWord } from '@/lib/word/generate-word'
 import { LegalDocument } from '@/lib/pdf/document-structure'
+import { isSubscribed } from '@/lib/subscription-checker'
 
 interface Client {
   id: string
@@ -32,7 +34,7 @@ interface GeneratedDocument {
 
 interface DocumentWizardProps {
   clients: Client[]
-  user: User
+  user: User & { exceededLimit?: boolean | null }
   onCompleteAction: (data: {
     clientId: string
     documentType: string
@@ -43,7 +45,12 @@ interface DocumentWizardProps {
   onUploadAction: (file: File, user: User) => Promise<boolean>
 }
 
-export function DocumentWizard({ clients, user, onCompleteAction, onUploadAction }: DocumentWizardProps) {
+export function DocumentWizard({
+  clients,
+  user,
+  onCompleteAction,
+  onUploadAction,
+}: DocumentWizardProps) {
   const [step, setStep] = useState(1)
   const [userRole, setUserRole] = useState<'client' | 'provider' | null>(null)
   const [selectedClient, setSelectedClient] = useState('')
@@ -56,23 +63,44 @@ export function DocumentWizard({ clients, user, onCompleteAction, onUploadAction
   const selectedDocumentType = DOCUMENT_TYPES.find((dt) => dt.id === selectedDocType)
   const selectedClientData = clients.find((client) => client.id === selectedClient)
 
-  // If there are no clients, show add client prompt
-  if (clients.length === 0) {
+  // Check if user has exceeded their limit
+  if (user.exceededLimit) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>No Clients Found</CardTitle>
-          <CardDescription>
+          <CardTitle>Document Limit Reached</CardTitle>
+          <CardDescription>You have reached your document generation limit.</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col items-center justify-center py-8">
+          <p className="text-gray-500 mb-4 text-center">
+            Subscribe to our premium plan to generate unlimited documents.
+          </p>
+          <Link href="/dashboard/subscription">
+            <Button>Subscribe Now</Button>
+          </Link>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  // If there are no clients, show add client prompt
+  if (clients.length === 0) {
+    return (
+      <Card className="bg-zinc-900 border-zinc-800">
+        <CardHeader>
+          <CardTitle className="text-zinc-100">No Clients Found</CardTitle>
+          <CardDescription className="text-zinc-400">
             You need to add at least one client before you can generate documents.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center py-8">
-          <UserPlus className="h-16 w-16 text-gray-400 mb-4" />
-          <p className="text-gray-500 mb-4 text-center">
-            Start by adding your first client to generate legal documents for them.
+          <UserPlus className="h-16 w-16 text-zinc-600 mb-4" />
+          <p className="text-zinc-400 mb-4 text-center">
+            Add your first client with their details including name, email, phone number, and
+            company information.
           </p>
           <Link href="/dashboard/clients/new">
-            <Button>
+            <Button variant="default" className="bg-yellow-500 hover:bg-yellow-600 text-black">
               <UserPlus className="h-4 w-4 mr-2" />
               Add Your First Client
             </Button>
@@ -160,6 +188,36 @@ export function DocumentWizard({ clients, user, onCompleteAction, onUploadAction
     }
   }
 
+  const handleWordDownload = async () => {
+    if (!generatedDoc || !selectedClientData) return
+
+    setIsLoading(true)
+    try {
+      const wordBlob = await generateWord(generatedDoc.document)
+      const wordFile = new File([wordBlob], generatedDoc.filename.replace('.pdf', '.docx'), {
+        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      })
+
+      // Save locally
+      const url = URL.createObjectURL(wordBlob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = wordFile.name
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
+
+      // Upload to storage
+      await onUploadAction(wordFile, user)
+    } catch (error) {
+      console.error('Error handling Word document:', error)
+      setError(error instanceof Error ? error.message : 'Failed to process Word document')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
     <div className="w-full mx-auto">
       <StepProgress step={step} totalSteps={5} />
@@ -176,8 +234,10 @@ export function DocumentWizard({ clients, user, onCompleteAction, onUploadAction
             {step === 5 ? (
               <DocumentComplete
                 isLoading={isLoading}
+                isSubscribed={isSubscribed(user)}
                 onBack={handleBack}
                 onDownload={handleDownload}
+                onWordDownload={handleWordDownload}
               />
             ) : step === 4 ? (
               <DocumentDetails
