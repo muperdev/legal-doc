@@ -274,6 +274,7 @@ export function DocumentWizard({
                 error={error}
                 onBack={handleBack}
                 onNext={handleNext}
+                isPremium={isSubscribed(user)}
               />
             )}
           </Card>

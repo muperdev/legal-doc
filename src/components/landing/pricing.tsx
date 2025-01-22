@@ -21,7 +21,7 @@ const PRICING_PLANS: Record<string, PricingPlan> = {
     monthly: 0,
     yearly: 0,
     features: [
-      'Access to 10 most-used document templates',
+      'Access to 5 document templates',
       '5 documents Limit',
       'Basic template customization',
       'PDF export option',
