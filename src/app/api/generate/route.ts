@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server'
 import { LegalDocument } from '@/lib/pdf/document-structure'
 import { Client, User } from '@/payload-types'
 
-export const maxDuration = 300 // 5 minutes timeout
+export const maxDuration = 60 // Maximum allowed for hobby plan
 export const dynamic = 'force-dynamic'
 
 export async function POST(req: Request) {
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     const { serviceProviderId, clientId, documentType, answers } = await req.json()
     // Fetch service provider details with timeout
     const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), 30000) // 30 second timeout
+    const timeout = setTimeout(() => controller.abort(), 9000) // 9 second timeout for API calls
 
     try {
       const serviceProviderResponse = await fetch(
@@ -56,8 +56,8 @@ export async function POST(req: Request) {
 
       const prompt = generatePrompt(documentType, serviceProvider, client, answers)
 
-      // Set a longer timeout for the AI generation
-      const aiTimeout = setTimeout(() => controller.abort(), 180000) // 3 minute timeout for AI
+      // Set timeout for the AI generation (leaving most time for this operation)
+      const aiTimeout = setTimeout(() => controller.abort(), 50000) // 50 second timeout for AI
 
       const { text: documentContent } = await generateText({
         model: openai('gpt-4'),
