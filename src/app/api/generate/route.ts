@@ -145,8 +145,8 @@ REQUIREMENTS:
         document,
         filename,
       })
-    } catch (error) {
-      if (error.name === 'AbortError') {
+    } catch (error: unknown) {
+      if (error instanceof Error && error.name === 'AbortError') {
         return new Response('Request timeout', { status: 504 })
       }
       console.error('Error generating document:', error)
@@ -156,9 +156,11 @@ REQUIREMENTS:
     } finally {
       clearTimeout(timeout)
     }
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error generating document:', error)
-    return new Response('Failed to generate document', { status: 500 })
+    return new Response(error instanceof Error ? error.message : 'Failed to generate document', {
+      status: 500,
+    })
   }
 }
 
