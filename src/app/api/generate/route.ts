@@ -8,6 +8,9 @@ export const maxDuration = 300 // 5 minutes for Pro plan
 export const dynamic = 'force-dynamic'
 
 export async function POST(req: Request) {
+  const startTime = Date.now()
+  console.log('🕒 Starting document generation process')
+
   try {
     const authHeader = req.headers.get('Authorization')
     if (!authHeader?.startsWith('Bearer ')) {
@@ -16,11 +19,15 @@ export async function POST(req: Request) {
 
     const token = authHeader.split(' ')[1]
     const { serviceProviderId, clientId, documentType, answers } = await req.json()
+    console.log(`📝 Document Type: ${documentType}`)
+
     // Fetch service provider details with timeout
     const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), 30000) // 30 second timeout for API calls
+    const timeout = setTimeout(() => controller.abort(), 30000)
 
     try {
+      console.log('🔍 Fetching service provider details...')
+      const fetchProviderStart = Date.now()
       const serviceProviderResponse = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${serviceProviderId}`,
         {
@@ -30,6 +37,7 @@ export async function POST(req: Request) {
           signal: controller.signal,
         },
       )
+      console.log(`⏱️ Service provider fetch took: ${Date.now() - fetchProviderStart}ms`)
 
       if (!serviceProviderResponse.ok) {
         return new Response('Service provider not found', { status: 404 })
@@ -38,6 +46,8 @@ export async function POST(req: Request) {
       const serviceProvider = await serviceProviderResponse.json()
 
       // Fetch client details with timeout
+      console.log('🔍 Fetching client details...')
+      const fetchClientStart = Date.now()
       const clientResponse = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/clients/${clientId}`,
         {
@@ -47,6 +57,7 @@ export async function POST(req: Request) {
           signal: controller.signal,
         },
       )
+      console.log(`⏱️ Client fetch took: ${Date.now() - fetchClientStart}ms`)
 
       if (!clientResponse.ok) {
         return new Response('Client not found', { status: 404 })
@@ -54,11 +65,16 @@ export async function POST(req: Request) {
 
       const client = await clientResponse.json()
 
+      console.log('📋 Generating prompt...')
+      const promptStart = Date.now()
       const prompt = generatePrompt(documentType, serviceProvider, client, answers)
+      console.log(`⏱️ Prompt generation took: ${Date.now() - promptStart}ms`)
 
-      // Set timeout for the AI generation (leaving most time for this operation)
-      const aiTimeout = setTimeout(() => controller.abort(), 240000) // 4 minute timeout for AI
+      // Set timeout for the AI generation
+      const aiTimeout = setTimeout(() => controller.abort(), 240000)
 
+      console.log('🤖 Starting AI document generation...')
+      const aiStart = Date.now()
       const { text: documentContent } = await generateText({
         model: openai('gpt-4'),
         prompt,
@@ -131,25 +147,33 @@ REQUIREMENTS:
 7. NEVER return single-line section content
 8. Each section must be thorough and detailed`,
       })
+      console.log(`⏱️ AI generation took: ${Date.now() - aiStart}ms`)
 
       clearTimeout(aiTimeout)
 
-      // Parse the AI response into our document structure
+      console.log('🔄 Parsing AI response...')
+      const parseStart = Date.now()
       const document: LegalDocument = JSON.parse(documentContent)
+      console.log(`⏱️ JSON parsing took: ${Date.now() - parseStart}ms`)
 
       // Generate filename
       const dateStr = new Date().toISOString().split('T')[0]
       const filename = `${documentType}-${client.name}-${dateStr}.pdf`.replace(/\s+/g, '-')
+
+      const totalTime = Date.now() - startTime
+      console.log(`✅ Total document generation time: ${totalTime}ms`)
 
       return NextResponse.json({
         document,
         filename,
       })
     } catch (error: unknown) {
+      const errorTime = Date.now() - startTime
       if (error instanceof Error && error.name === 'AbortError') {
+        console.error(`⚠️ Request timeout after ${errorTime}ms`)
         return new Response('Request timeout', { status: 504 })
       }
-      console.error('Error generating document:', error)
+      console.error(`❌ Error generating document after ${errorTime}ms:`, error)
       return new Response(error instanceof Error ? error.message : 'Failed to generate document', {
         status: 500,
       })
@@ -157,7 +181,8 @@ REQUIREMENTS:
       clearTimeout(timeout)
     }
   } catch (error: unknown) {
-    console.error('Error generating document:', error)
+    const errorTime = Date.now() - startTime
+    console.error(`❌ Outer error after ${errorTime}ms:`, error)
     return new Response(error instanceof Error ? error.message : 'Failed to generate document', {
       status: 500,
     })
