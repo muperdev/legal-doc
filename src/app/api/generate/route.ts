@@ -4,7 +4,8 @@ import { NextResponse } from 'next/server'
 import { LegalDocument } from '@/lib/pdf/document-structure'
 import { Client, User } from '@/payload-types'
 
-export const runtime = 'edge'
+export const maxDuration = 300 // 5 minutes timeout
+export const dynamic = 'force-dynamic'
 
 export async function POST(req: Request) {
   try {
@@ -15,45 +16,54 @@ export async function POST(req: Request) {
 
     const token = authHeader.split(' ')[1]
     const { serviceProviderId, clientId, documentType, answers } = await req.json()
-    // Fetch service provider details
-    const serviceProviderResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${serviceProviderId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+    // Fetch service provider details with timeout
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 30000) // 30 second timeout
+
+    try {
+      const serviceProviderResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${serviceProviderId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          signal: controller.signal,
         },
-      },
-    )
+      )
 
-    if (!serviceProviderResponse.ok) {
-      return new Response('Service provider not found', { status: 404 })
-    }
+      if (!serviceProviderResponse.ok) {
+        return new Response('Service provider not found', { status: 404 })
+      }
 
-    const serviceProvider = await serviceProviderResponse.json()
+      const serviceProvider = await serviceProviderResponse.json()
 
-    // Fetch client details
-    const clientResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/clients/${clientId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      // Fetch client details with timeout
+      const clientResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/clients/${clientId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          signal: controller.signal,
         },
-      },
-    )
+      )
 
-    if (!clientResponse.ok) {
-      return new Response('Client not found', { status: 404 })
-    }
+      if (!clientResponse.ok) {
+        return new Response('Client not found', { status: 404 })
+      }
 
-    const client = await clientResponse.json()
+      const client = await clientResponse.json()
 
-    const prompt = generatePrompt(documentType, serviceProvider, client, answers)
+      const prompt = generatePrompt(documentType, serviceProvider, client, answers)
 
-    const { text: documentContent } = await generateText({
-      model: openai('gpt-4'),
-      prompt,
-      temperature: 0.8,
-      system: `You are a professional legal document generator. Generate a structured JSON document following this exact interface:
+      // Set a longer timeout for the AI generation
+      const aiTimeout = setTimeout(() => controller.abort(), 180000) // 3 minute timeout for AI
+
+      const { text: documentContent } = await generateText({
+        model: openai('gpt-4'),
+        prompt,
+        temperature: 0.8,
+        system: `You are a professional legal document generator. Generate a structured JSON document following this exact interface:
 
 interface LegalDocument {
   metadata: {
@@ -120,19 +130,32 @@ REQUIREMENTS:
 6. Use proper legal document style and terminology
 7. NEVER return single-line section content
 8. Each section must be thorough and detailed`,
-    })
+      })
 
-    // Parse the AI response into our document structure
-    const document: LegalDocument = JSON.parse(documentContent)
+      clearTimeout(aiTimeout)
 
-    // Generate filename
-    const dateStr = new Date().toISOString().split('T')[0]
-    const filename = `${documentType}-${client.name}-${dateStr}.pdf`.replace(/\s+/g, '-')
+      // Parse the AI response into our document structure
+      const document: LegalDocument = JSON.parse(documentContent)
 
-    return NextResponse.json({
-      document,
-      filename,
-    })
+      // Generate filename
+      const dateStr = new Date().toISOString().split('T')[0]
+      const filename = `${documentType}-${client.name}-${dateStr}.pdf`.replace(/\s+/g, '-')
+
+      return NextResponse.json({
+        document,
+        filename,
+      })
+    } catch (error) {
+      if (error.name === 'AbortError') {
+        return new Response('Request timeout', { status: 504 })
+      }
+      console.error('Error generating document:', error)
+      return new Response(error instanceof Error ? error.message : 'Failed to generate document', {
+        status: 500,
+      })
+    } finally {
+      clearTimeout(timeout)
+    }
   } catch (error) {
     console.error('Error generating document:', error)
     return new Response('Failed to generate document', { status: 500 })

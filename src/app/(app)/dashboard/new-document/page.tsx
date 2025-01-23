@@ -20,29 +20,43 @@ async function generateDocument(data: { clientId: string; documentType: string }
   if (!token) {
     throw new Error('Unauthorized')
   }
-  let response
+
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 300000) // 5 minute timeout
+
   try {
-    response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/generate`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/generate`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token.value}`,
       },
       body: JSON.stringify(data),
+      signal: controller.signal,
     })
 
     if (!response.ok) {
       const error = await response.text()
+      if (response.status === 504) {
+        throw new Error('Document generation is taking longer than expected. Please try again.')
+      }
       throw new Error(error || 'Failed to generate document')
     }
-  } catch (error) {
+
+    const result = await response.json()
+    return result
+  } catch (error: unknown) {
     console.error('Error generating document:', error)
-    throw error
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error('Document generation timed out. Please try again.')
+    }
+    if (error instanceof Error) {
+      throw error
+    }
+    throw new Error('An unexpected error occurred')
+  } finally {
+    clearTimeout(timeout)
   }
-
-  const result = await response.json()
-
-  return result
 }
 
 async function uploadDocument(file: File, user: User) {
