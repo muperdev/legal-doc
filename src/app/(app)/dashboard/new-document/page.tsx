@@ -6,7 +6,7 @@ import { currentUser } from '@/lib/auth'
 import { User } from '@/payload-types'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-
+import axios from 'axios'
 const payload = await getPayload({
   config: config,
 })
@@ -20,30 +20,28 @@ async function generateDocument(data: { clientId: string; documentType: string }
   if (!token) {
     throw new Error('Unauthorized')
   }
-
-  const controller = new AbortController()
-  const timeout = setTimeout(() => controller.abort(), 300000) // 5 minute timeout
-
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/generate`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token.value}`,
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/generate`,
+      data,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token.value}`,
+        },
+        timeout: 240000, // 4 minute timeout
       },
-      body: JSON.stringify(data),
-      signal: controller.signal,
-    })
+    )
 
-    if (!response.ok) {
-      const error = await response.text()
+    if (response.status !== 200) {
+      const error = response.data
       if (response.status === 504) {
         throw new Error('Document generation is taking longer than expected. Please try again.')
       }
       throw new Error(error || 'Failed to generate document')
     }
 
-    const result = await response.json()
+    const result = response.data
     return result
   } catch (error: unknown) {
     console.error('Error generating document:', error)
@@ -54,8 +52,6 @@ async function generateDocument(data: { clientId: string; documentType: string }
       throw error
     }
     throw new Error('An unexpected error occurred')
-  } finally {
-    clearTimeout(timeout)
   }
 }
 
