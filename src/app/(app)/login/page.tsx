@@ -9,6 +9,7 @@ import { loginSchema, type LoginFormData } from '@/lib/validations/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import posthog from 'posthog-js'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -26,6 +27,10 @@ export default function LoginPage() {
     try {
       setLoading(true)
       await login(data)
+      posthog.identify(
+        data.email, // Replace 'distinct_id' with your user's unique identifier
+        { email: data.email }, // optional: set additional person properties
+      )
       toast.success('Successfully logged in')
       router.push('/dashboard')
     } catch (error) {

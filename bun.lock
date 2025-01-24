@@ -41,7 +41,7 @@
         "payload": "latest",
         "pdf-lib": "^1.17.1",
         "pdfmake": "^0.2.18",
-        "posthog-js": "^1.207.0",
+        "posthog-js": "^1.209.1",
         "puppeteer": "^24.0.0",
         "react": "19.0.0",
         "react-dom": "19.0.0",

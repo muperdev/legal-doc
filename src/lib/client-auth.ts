@@ -2,7 +2,6 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { cookies } from 'next/headers'
-import { User } from '@/payload-types'
 
 export type LoginFormData = {
   email: string
@@ -62,7 +61,7 @@ export async function signup(data: SignupFormData) {
         role: 'user',
       },
     })
-    
+
     const loginResult = await login({ email: data.email, password: data.password })
 
     return loginResult
