@@ -28,11 +28,19 @@ async function uploadDocument(file: File, user: User) {
         Authorization: `Bearer ${token.value}`,
       },
     })
-
+    
     if (!uploadDocument) {
       throw new Error('Failed to upload document')
     }
     result = await uploadDocument.json()
+    payload.update({
+      collection: 'users',
+      id: user.id,
+      data: {
+        documents: [...(user.documents || []), result.doc.id],
+      },
+    })
+
     console.log(result)
   } catch (error) {
     throw error

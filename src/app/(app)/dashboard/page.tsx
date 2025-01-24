@@ -8,7 +8,12 @@ import { cookies } from 'next/headers'
 import { currentUser } from '@/lib/auth'
 import { isSubscribed } from '@/lib/subscription-checker'
 import { User } from '@/payload-types'
+import { getPayload } from 'payload'
+import config from '@payload-config'
 
+const payload = await getPayload({
+  config: config,
+})
 export default async function Dashboard() {
   const cookieStore = await cookies()
   const token = cookieStore.get('payload-token')
@@ -16,7 +21,11 @@ export default async function Dashboard() {
     return null
   }
 
-  const user = await currentUser()
+  const userData = await currentUser()
+  const user = await payload.findByID({
+    collection: 'users',
+    id: userData?.id.toString() || '0',
+  })
   if (!user) return null
 
   return (
