@@ -53,9 +53,6 @@ export function HowItWorks() {
           <button className="inline-flex items-center px-6 py-3 border border-yellow-500 text-base font-medium  text-yellow-500 hover:bg-yellow-500 hover:text-black transition-colors">
             Start
           </button>
-          <button className="inline-flex items-center px-6 py-3 text-base font-medium text-white">
-            Learn More →
-          </button>
         </div>
       </div>
     </div>

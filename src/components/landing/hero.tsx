@@ -22,12 +22,6 @@ export function Hero() {
               >
                 Get Started
               </Link>
-              <Link
-                href="/learn-more"
-                className="border border-white px-8 py-3 text-base font-medium text-white transition-all hover:bg-white/10"
-              >
-                Learn More
-              </Link>
             </div>
           </div>
 

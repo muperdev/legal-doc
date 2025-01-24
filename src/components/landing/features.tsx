@@ -33,9 +33,6 @@ export function Features() {
               >
                 Get Started
               </Link>
-              <Link href="/learn-more" className="flex items-center text-sm font-medium text-white">
-                Learn More <span className="ml-2">→</span>
-              </Link>
             </div>
           </div>
 
