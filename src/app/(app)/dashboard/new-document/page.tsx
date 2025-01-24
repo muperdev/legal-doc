@@ -6,54 +6,9 @@ import { currentUser } from '@/lib/auth'
 import { User } from '@/payload-types'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import axios from 'axios'
 const payload = await getPayload({
   config: config,
 })
-
-async function generateDocument(data: { clientId: string; documentType: string }) {
-  'use server'
-
-  const cookieStore = await cookies()
-  const token = cookieStore.get('payload-token')
-
-  if (!token) {
-    throw new Error('Unauthorized')
-  }
-  try {
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/generate`,
-      data,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token.value}`,
-        },
-        timeout: 240000, // 4 minute timeout
-      },
-    )
-
-    if (response.status !== 200) {
-      const error = response.data
-      if (response.status === 504) {
-        throw new Error('Document generation is taking longer than expected. Please try again.')
-      }
-      throw new Error(error || 'Failed to generate document')
-    }
-
-    const result = response.data
-    return result
-  } catch (error: unknown) {
-    console.error('Error generating document:', error)
-    if (error instanceof Error && error.name === 'AbortError') {
-      throw new Error('Document generation timed out. Please try again.')
-    }
-    if (error instanceof Error) {
-      throw error
-    }
-    throw new Error('An unexpected error occurred')
-  }
-}
 
 async function uploadDocument(file: File, user: User) {
   'use server'
@@ -133,6 +88,7 @@ export default async function NewDocumentPage() {
     <PageContainer title="New Document" backUrl="/dashboard">
       <div className="py-8 w-full">
         <DocumentWizard
+          token={token.value}
           user={user as User}
           clients={(user?.clients || []).map((client: any) => ({
             id: client.id,
@@ -141,7 +97,6 @@ export default async function NewDocumentPage() {
             companyName: client.companyName,
             address: client.address,
           }))}
-          onCompleteAction={generateDocument}
           onUploadAction={uploadDocument}
         />
       </div>

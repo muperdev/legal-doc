@@ -18,6 +18,7 @@ import { generatePDF } from '@/lib/pdf/generate-pdf'
 import { generateWord } from '@/lib/word/generate-word'
 import { LegalDocument } from '@/lib/pdf/document-structure'
 import { isSubscribed } from '@/lib/subscription-checker'
+import axios from 'axios'
 
 interface Client {
   id: string
@@ -35,22 +36,11 @@ interface GeneratedDocument {
 interface DocumentWizardProps {
   clients: Client[]
   user: User & { exceededLimit?: boolean | null }
-  onCompleteAction: (data: {
-    clientId: string
-    documentType: string
-    answers: Record<string, string>
-    userRole: 'client' | 'provider'
-    serviceProviderId: string
-  }) => Promise<GeneratedDocument>
+  token: string
   onUploadAction: (file: File, user: User) => Promise<boolean>
 }
 
-export function DocumentWizard({
-  clients,
-  user,
-  onCompleteAction,
-  onUploadAction,
-}: DocumentWizardProps) {
+export function DocumentWizard({ clients, user, token, onUploadAction }: DocumentWizardProps) {
   const [step, setStep] = useState(1)
   const [userRole, setUserRole] = useState<'client' | 'provider' | null>(null)
   const [selectedClient, setSelectedClient] = useState('')
@@ -130,20 +120,50 @@ export function DocumentWizard({
 
       setIsLoading(true)
       setError(null)
-      try {
-        const result = await onCompleteAction({
-          clientId: selectedClient,
-          serviceProviderId: user.id.toString(),
+      const data = {
+        clientId: selectedClient,
+        serviceProviderId: user.id.toString(),
+        documentType: selectedDocType,
+        answers: {
+          clientName: selectedClientData?.name || '',
+          clientCompany: selectedClientData?.companyName || '',
+          clientAddress: selectedClientData?.address || '',
           documentType: selectedDocType,
-          answers: {
-            clientName: selectedClientData?.name || '',
-            clientCompany: selectedClientData?.companyName || '',
-            clientAddress: selectedClientData?.address || '',
-            documentType: selectedDocType,
-            ...answers,
+          ...answers,
+        },
+        userRole: userRole || 'client',
+      }
+      try {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/generate`,
+          data,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            timeout: 240000, // 4 minute timeout
           },
-          userRole: userRole || 'client',
-        })
+        )
+
+        if (response.status !== 200) {
+          const error = response.data
+          if (response.status === 504) {
+            throw new Error('Document generation is taking longer than expected. Please try again.')
+          }
+          throw new Error(error || 'Failed to generate document')
+        }
+
+        const result = response.data
+        setGeneratedDoc(result)
+
+        if (response.status !== 200) {
+          const error = response.data
+          if (response.status === 504) {
+            throw new Error('Document generation is taking longer than expected. Please try again.')
+          }
+          throw new Error(error || 'Failed to generate document')
+        }
 
         setGeneratedDoc(result)
         setStep(5)
