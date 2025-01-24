@@ -6,6 +6,7 @@ import {
   SubscribeButton,
   SubscriptionStatusTypes,
 } from '@/components/subscription/subscribe-button'
+import Link from 'next/link'
 
 interface PricingPlan {
   name: string
@@ -137,9 +138,12 @@ export function Pricing({
                 </ul>
               </div>
               {key === 'free' ? (
-                <button className="mt-8 w-full py-2 px-4 border-2 border-white text-white hover:bg-white hover:text-black transition-colors">
+                <Link
+                  href="/signup"
+                  className="mt-8 w-full py-2 px-4 border-2 border-white text-white hover:bg-white hover:text-black transition-colors"
+                >
                   Get started
-                </button>
+                </Link>
               ) : (
                 <div className="mt-8 w-full">
                   <SubscribeButton
