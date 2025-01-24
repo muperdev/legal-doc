@@ -2,13 +2,13 @@ import { Box } from 'lucide-react'
 
 export function HowItWorks() {
   return (
-    <div className="py-24 bg-black">
+    <div className="py-8 md:py-24 bg-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <span className="text-sm font-medium text-yellow-500">Ease</span>
           <h2 className="mt-2 text-4xl font-bold text-white sm:text-5xl font-blackHanSans">
             Doc Creation Made Easy in 3 Steps,{' '}
-            <span className="block text-yellow-500 mt-2">COME ONNNNN!</span>
+            <span className="block text-primary mt-2">COME ONNNNN!</span>
           </h2>
           <p className="mt-4 text-xl text-gray-300">Follow these steps, and you will be fine.</p>
         </div>

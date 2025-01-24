@@ -5,6 +5,7 @@ import { HowItWorks } from '@/components/landing/how-it-works'
 import { Pricing } from '@/components/landing/pricing'
 import { Newsletter } from '@/components/landing/newsletter'
 import { Footer } from '@/components/landing/footer'
+import { ProductHunt } from '@/components/landing/product-hunt'
 import { currentUser } from '@/lib/auth'
 import { cookies } from 'next/headers'
 
@@ -19,6 +20,7 @@ export default async function LandingPage() {
         <Navigation authenticated={!!user} />
         <Hero />
         <Features />
+        <ProductHunt />
         <HowItWorks />
         <Pricing userSubscriptionStatus={user?.subscription?.status || null} token={token} />
         <Newsletter />
