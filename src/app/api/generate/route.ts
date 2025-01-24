@@ -75,11 +75,19 @@ export async function POST(req: Request) {
 
       console.log('🤖 Starting AI document generation...')
       const aiStart = Date.now()
-      const { text: documentContent } = await generateText({
-        model: openai('gpt-4'),
-        prompt,
+
+      console.log('📤 Sending request to AI with:', {
+        model: 'gpt-4',
+        promptLength: prompt.length,
         temperature: 0.8,
-        system: `You are a professional legal document generator. Generate a structured JSON document following this exact interface:
+      })
+
+      try {
+        const { text: documentContent } = await generateText({
+          model: openai('gpt-4'),
+          prompt,
+          temperature: 0.8,
+          system: `You are a professional legal document generator. Generate a structured JSON document following this exact interface:
 
 interface LegalDocument {
   metadata: {
@@ -146,37 +154,52 @@ REQUIREMENTS:
 6. Use proper legal document style and terminology
 7. NEVER return single-line section content
 8. Each section must be thorough and detailed`,
-      })
-      console.log(`⏱️ AI generation took: ${Date.now() - aiStart}ms`)
+        })
 
-      clearTimeout(aiTimeout)
+        console.log(`⏱️ AI generation completed in: ${Date.now() - aiStart}ms`)
+        console.log('📥 Received AI response length:', documentContent.length)
+        console.log('🔍 First 200 characters of response:', documentContent.substring(0, 200))
 
-      console.log('🔄 Parsing AI response...')
-      const parseStart = Date.now()
-      const document: LegalDocument = JSON.parse(documentContent)
-      console.log(`⏱️ JSON parsing took: ${Date.now() - parseStart}ms`)
+        if (!documentContent.trim().startsWith('{')) {
+          console.error('❌ Invalid JSON response - does not start with {')
+          console.log('📄 Full response:', documentContent)
+          throw new Error('Invalid JSON response from AI')
+        }
 
-      // Generate filename
-      const dateStr = new Date().toISOString().split('T')[0]
-      const filename = `${documentType}-${client.name}-${dateStr}.pdf`.replace(/\s+/g, '-')
+        console.log(`⏱️ AI generation took: ${Date.now() - aiStart}ms`)
 
-      const totalTime = Date.now() - startTime
-      console.log(`✅ Total document generation time: ${totalTime}ms`)
+        clearTimeout(aiTimeout)
 
-      return NextResponse.json({
-        document,
-        filename,
-      })
-    } catch (error: unknown) {
-      const errorTime = Date.now() - startTime
-      if (error instanceof Error && error.name === 'AbortError') {
-        console.error(`⚠️ Request timeout after ${errorTime}ms`)
-        return new Response('Request timeout', { status: 504 })
+        console.log('🔄 Parsing AI response...')
+        const parseStart = Date.now()
+        const document: LegalDocument = JSON.parse(documentContent)
+        console.log(`⏱️ JSON parsing took: ${Date.now() - parseStart}ms`)
+
+        // Generate filename
+        const dateStr = new Date().toISOString().split('T')[0]
+        const filename = `${documentType}-${client.name}-${dateStr}.pdf`.replace(/\s+/g, '-')
+
+        const totalTime = Date.now() - startTime
+        console.log(`✅ Total document generation time: ${totalTime}ms`)
+
+        return NextResponse.json({
+          document,
+          filename,
+        })
+      } catch (error: unknown) {
+        const errorTime = Date.now() - startTime
+        if (error instanceof Error && error.name === 'AbortError') {
+          console.error(`⚠️ Request timeout after ${errorTime}ms`)
+          return new Response('Request timeout', { status: 504 })
+        }
+        console.error(`❌ Error generating document after ${errorTime}ms:`, error)
+        return new Response(
+          error instanceof Error ? error.message : 'Failed to generate document',
+          {
+            status: 500,
+          },
+        )
       }
-      console.error(`❌ Error generating document after ${errorTime}ms:`, error)
-      return new Response(error instanceof Error ? error.message : 'Failed to generate document', {
-        status: 500,
-      })
     } finally {
       clearTimeout(timeout)
     }
