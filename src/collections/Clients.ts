@@ -8,7 +8,7 @@ export const Clients: CollectionConfig = {
   },
   access: {
     read: isAdminOrSelf,
-    create: isAdminOrSelf,
+    create: () => true,
     update: isAdminOrSelf,
   },
   fields: [

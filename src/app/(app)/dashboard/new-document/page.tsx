@@ -83,14 +83,17 @@ export default async function NewDocumentPage() {
   }
 
   const user = (await currentUser()) as User
-
+  const userData = await payload.findByID({
+    collection: 'users',
+    id: user?.id.toString() || '0',
+  })
   return (
     <PageContainer title="New Document" backUrl="/dashboard">
       <div className="py-8 w-full">
         <DocumentWizard
           token={token.value}
           user={user as User}
-          clients={(user?.clients || []).map((client: any) => ({
+          clients={(userData?.clients || []).map((client: any) => ({
             id: client.id,
             name: client.name,
             email: client.email,

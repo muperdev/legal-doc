@@ -42,6 +42,8 @@ export async function POST(req: Request) {
         companyName,
         companyAddress,
       },
+      user: user.id,
+      overrideAccess: false,
     })
 
     await payload.update({
