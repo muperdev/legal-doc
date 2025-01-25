@@ -4,13 +4,15 @@ import { currentUser } from '@/lib/auth'
 import { CheckCircle2, XCircle } from 'lucide-react'
 import { redirect } from 'next/navigation'
 
-export default async function SubscriptionStatus({
-  searchParams,
-}: {
-  searchParams: { success?: string; canceled?: string }
-}) {
-  const success = searchParams.success
-  const canceled = searchParams.canceled
+interface PageProps {
+  searchParams: {
+    [key: string]: string | string[] | undefined
+  }
+}
+
+export default async function SubscriptionStatus({ searchParams }: PageProps) {
+  const success = typeof searchParams.success === 'string' ? searchParams.success : undefined
+  const canceled = typeof searchParams.canceled === 'string' ? searchParams.canceled : undefined
 
   // Redirect after rendering using a meta refresh
   const redirectHeader = <meta httpEquiv="refresh" content="5;url=/dashboard" />
