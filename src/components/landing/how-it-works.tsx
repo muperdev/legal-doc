@@ -1,4 +1,5 @@
 import { Box } from 'lucide-react'
+import Link from 'next/link'
 
 export function HowItWorks() {
   return (
@@ -50,9 +51,9 @@ export function HowItWorks() {
         </div>
 
         <div className="mt-16 flex justify-center gap-4">
-          <button className="inline-flex items-center px-6 py-3 border border-yellow-500 text-base font-medium  text-yellow-500 hover:bg-yellow-500 hover:text-black transition-colors">
+          <Link href="/signup" className="inline-flex items-center px-6 py-3 border border-yellow-500 text-base font-medium  text-yellow-500 hover:bg-yellow-500 hover:text-black transition-colors">
             Start
-          </button>
+          </Link>
         </div>
       </div>
     </div>

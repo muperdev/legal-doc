@@ -1,3 +1,4 @@
+import { isAdminFieldLevel } from '@/access/is-admin'
 import { isAdminOrSelf } from '@/access/is-admin-or-self'
 import { CollectionConfig } from 'payload'
 
@@ -34,6 +35,9 @@ export const Users: CollectionConfig = {
     {
       name: 'exceededLimit',
       type: 'checkbox',
+      access: {
+        update: isAdminFieldLevel,
+      },
     },
     {
       name: 'companyName',
@@ -60,10 +64,16 @@ export const Users: CollectionConfig = {
         { label: 'Admin', value: 'admin' },
         { label: 'User', value: 'user' },
       ],
+      access: {
+        update: isAdminFieldLevel,
+      },
     },
     {
       name: 'subscriptionLimit',
       type: 'number',
+      access: {
+        update: isAdminFieldLevel,
+      },
       defaultValue: 5,
     },
     {

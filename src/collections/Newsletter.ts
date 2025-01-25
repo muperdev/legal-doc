@@ -1,4 +1,4 @@
-import { isAdminOrSelf } from '@/access/is-admin-or-self'
+import { isAdmin } from '@/access/is-admin'
 import type { CollectionConfig } from 'payload'
 
 export const Newsletter: CollectionConfig = {
@@ -7,9 +7,9 @@ export const Newsletter: CollectionConfig = {
     useAsTitle: 'email',
   },
   access: {
-    read: isAdminOrSelf,
+    read: isAdmin,
     create: () => true,
-    update: isAdminOrSelf,
+    update: isAdmin,
   },
   fields: [
     {
