@@ -64,10 +64,10 @@ export default async function Dashboard() {
         {/* Recent Documents */}
         <div>
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-white">Recent Documents</h2>
+            <h2 className="md:text-xl text-base font-semibold text-white">Recent Documents</h2>
             <Link
               href="/dashboard/new-document"
-              className="inline-flex items-center  bg-primary px-5 py-2 text-sm font-medium text-black shadow-md transition-all duration-200 hover:bg-[#e5c71e] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
+              className="inline-flex items-center  bg-primary md:px-5 px-3 py-2 text-sm font-medium text-black shadow-md transition-all duration-200 hover:bg-[#e5c71e] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
             >
               <Plus className="mr-2 h-5 w-5" />
               New Document
@@ -88,8 +88,8 @@ export default async function Dashboard() {
           />
         </div>
 
-        {/* Quick Actions */}
-        <div>
+        {/* TODO Quick Actions */}
+        {/* <div>
           <h2 className="mb-4 text-xl font-semibold text-white">Quick Actions</h2>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             <QuickActionCard
@@ -105,7 +105,7 @@ export default async function Dashboard() {
               href="/dashboard/analytics"
             />
           </div>
-        </div>
+        </div> */}
       </div>
     </PageContainer>
   )

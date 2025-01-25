@@ -12,16 +12,16 @@ interface DocumentListWrapperProps {
 export function DocumentListWrapper({ documents, isSubscribed }: DocumentListWrapperProps) {
   if (!isSubscribed) {
     return (
-      <div className="relative">
+      <div className="relative text-center">
         <div className="filter blur-[2px] pointer-events-none">
           <DocumentList documents={documents} />
         </div>
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80">
           <LockKeyhole className="h-12 w-12 text-yellow-500 mb-4" />
-          <h3 className="text-xl font-semibold text-white mb-2">
+          <h3 className="md:text-xl font-semibold text-white mb-2">
             Subscribe to Access Document History
           </h3>
-          <p className="text-gray-400 mb-6 text-center max-w-md">
+          <p className="text-gray-400 mb-6 text-center max-w-md md:text-base text-xs">
             Upgrade your account to view and manage your document history, download in multiple
             formats, and more.
           </p>
