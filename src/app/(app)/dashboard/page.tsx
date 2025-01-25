@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { FileText, Plus, BarChart, Users, ShieldCheck } from 'lucide-react'
 import { StatCard } from '@/components/dashboard/stat-card'
-import { QuickActionCard } from '@/components/dashboard/quick-action-card'
 import { DocumentListWrapper } from '@/components/dashboard/document-list-wrapper'
 import { PageContainer } from '@/components/dashboard/layout/page-container'
 import { cookies } from 'next/headers'
@@ -32,9 +31,7 @@ export default async function Dashboard() {
     <PageContainer
       token={token.value}
       title="Dashboard"
-      showSubscribeButton={
-        user?.subscription?.status === 'incomplete' || user?.subscription?.status === 'canceled'
-      }
+      user={user}
     >
       <div className="space-y-8">
         {/* Quick stats */}

@@ -28,7 +28,7 @@ async function uploadDocument(file: File, user: User) {
         Authorization: `Bearer ${token.value}`,
       },
     })
-    
+
     if (!uploadDocument) {
       throw new Error('Failed to upload document')
     }
@@ -96,7 +96,7 @@ export default async function NewDocumentPage() {
     id: user?.id.toString() || '0',
   })
   return (
-    <PageContainer title="New Document" backUrl="/dashboard">
+    <PageContainer user={user} title="New Document" backUrl="/dashboard">
       <div className="py-8 w-full">
         <DocumentWizard
           token={token.value}

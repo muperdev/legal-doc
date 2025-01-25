@@ -3,11 +3,12 @@
 import Link from 'next/link'
 import { redirect, usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { LayoutDashboard, Users, Settings, LogOut, FilePlus } from 'lucide-react'
+import { LayoutDashboard, Users, LogOut, FilePlus } from 'lucide-react'
 import Image from 'next/image'
 import { SubscribeButton } from '@/components/subscription/subscribe-button'
 import { User } from '@/payload-types'
 import { isSubscribed } from '@/lib/subscription-checker'
+import { X } from 'lucide-react'
 
 const handleLogout = async () => {
   await fetch(process.env.NEXT_PUBLIC_SERVER_URL + '/api/users/logout', {
@@ -42,11 +43,27 @@ const routes = [
   // },
 ]
 
-export function Sidebar({ user }: { user: User }) {
+export function Sidebar({
+  user,
+  onClose,
+  setIsMobileMenuOpen,
+}: {
+  user: User
+  onClose?: () => void
+  setIsMobileMenuOpen?: (isOpen: boolean) => void
+}) {
   const pathname = usePathname()
 
   return (
-    <div className="flex flex-col h-full bg-black text-neutral-400 blackHanSans">
+    <div className="flex flex-col h-full bg-black text-neutral-400 blackHanSans relative">
+      {onClose && (
+        <button
+          onClick={onClose}
+          className="absolute right-4 top-4 p-2 text-neutral-400 hover:text-white lg:hidden"
+        >
+          <X className="h-5 w-5" />
+        </button>
+      )}
       <div className="px-6 py-6">
         <Link href="/" className="flex items-center mb-12">
           <Image
@@ -54,12 +71,12 @@ export function Sidebar({ user }: { user: User }) {
             alt="Logo"
             width={200}
             height={50}
-            className="cursor-pointer"
+            className="cursor-pointer md:w-[200px] w-[150px] "
             style={{ backgroundColor: 'transparent' }}
             priority
           />
         </Link>
-        <div className="space-y-1">
+        <div className="md:space-y-1 space-y-3" onClick={() => setIsMobileMenuOpen?.(false)}>
           {routes.map((route) => (
             <Link
               key={route.href}

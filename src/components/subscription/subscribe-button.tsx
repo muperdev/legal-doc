@@ -131,14 +131,14 @@ export function SubscribeButton({
       <button
         onClick={handleSubscription}
         className={cn(
-          'flex w-full items-center gap-x-2 md:gap-x-4 text-sm md:text-base font-medium py-1.5 md:py-2 px-3 md:px-4 transition-all duration-200',
+          'flex w-full items-center gap-x-4 md:gap-x-4 text-base font-medium py-1.5 md:py-2 px-3 md:px-4 transition-all duration-200',
           pathname === '/dashboard/subscription'
             ? 'text-black bg-primary'
             : 'text-gray-300 hover:text-white hover:bg-white/5',
         )}
       >
         <CreditCard
-          className={cn('h-4 w-4 md:h-5 md:w-5', pathname === '/dashboard/subscription' ? 'text-black' : '')}
+          className={cn('h-6 w-6 md:h-5 md:w-5', pathname === '/dashboard/subscription' ? 'text-black' : '')}
         />
         {getButtonText()}
       </button>
