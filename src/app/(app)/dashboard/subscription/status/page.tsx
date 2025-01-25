@@ -4,13 +4,14 @@ import { currentUser } from '@/lib/auth'
 import { CheckCircle2, XCircle } from 'lucide-react'
 import { redirect } from 'next/navigation'
 
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
+  
 interface PageProps {
-  searchParams: {
-    [key: string]: string | string[] | undefined
-  }
+  searchParams: SearchParams
 }
 
-export default async function SubscriptionStatus({ searchParams }: PageProps) {
+export default async function SubscriptionStatus(props: PageProps) {
+  const searchParams = await props.searchParams
   const success = typeof searchParams.success === 'string' ? searchParams.success : undefined
   const canceled = typeof searchParams.canceled === 'string' ? searchParams.canceled : undefined
 
