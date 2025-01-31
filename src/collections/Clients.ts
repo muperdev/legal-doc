@@ -10,6 +10,7 @@ export const Clients: CollectionConfig = {
     read: isAdminOrSelf,
     create: () => true,
     update: isAdminOrSelf,
+    delete: isAdminOrSelf,
   },
   fields: [
     {

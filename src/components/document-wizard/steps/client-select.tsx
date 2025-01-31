@@ -43,7 +43,6 @@ export function ClientSelect({
                   : 'border-neutral-800/50 hover:border-white'
               }`}
               onClick={() => {
-                console.log(client.id, 'client.id')
                 setSelectedClient(client.id)}}
             >
               <div className="flex items-center justify-between">

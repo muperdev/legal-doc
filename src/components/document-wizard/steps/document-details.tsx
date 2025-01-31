@@ -1,6 +1,5 @@
 import { Loader2 } from 'lucide-react'
 import {
-  Card,
   CardContent,
   CardDescription,
   CardFooter,

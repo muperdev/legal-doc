@@ -120,16 +120,14 @@ export function DocumentWizard({ clients, user, token, onUploadAction }: Documen
 
       setIsLoading(true)
       setError(null)
+
       const data = {
-        clientId: selectedClient,
-        serviceProviderId: user.id.toString(),
+        client: selectedClientData,
+        serviceProvider: user,
         documentType: selectedDocType,
         answers: {
-          clientName: selectedClientData?.name || '',
-          clientCompany: selectedClientData?.companyName || '',
-          clientAddress: selectedClientData?.address || '',
-          documentType: selectedDocType,
           ...answers,
+          documentType: selectedDocType,
         },
         userRole: userRole || 'client',
       }

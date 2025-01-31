@@ -17,8 +17,7 @@ export async function POST(req: Request) {
       return new Response('Unauthorized', { status: 401 })
     }
 
-    const token = authHeader.split(' ')[1]
-    const { serviceProviderId, clientId, documentType, answers } = await req.json()
+    const { serviceProvider, client, documentType, answers } = await req.json()
     console.log(`📝 Document Type: ${documentType}`)
 
     // Fetch service provider details with timeout
@@ -26,45 +25,6 @@ export async function POST(req: Request) {
     const timeout = setTimeout(() => controller.abort(), 30000)
 
     try {
-      console.log('🔍 Fetching service provider details...')
-      const fetchProviderStart = Date.now()
-      const serviceProviderResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${serviceProviderId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          signal: controller.signal,
-        },
-      )
-      console.log(`⏱️ Service provider fetch took: ${Date.now() - fetchProviderStart}ms`)
-
-      if (!serviceProviderResponse.ok) {
-        return new Response('Service provider not found', { status: 404 })
-      }
-
-      const serviceProvider = await serviceProviderResponse.json()
-
-      // Fetch client details with timeout
-      console.log('🔍 Fetching client details...')
-      const fetchClientStart = Date.now()
-      const clientResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/clients/${clientId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          signal: controller.signal,
-        },
-      )
-      console.log(`⏱️ Client fetch took: ${Date.now() - fetchClientStart}ms`)
-
-      if (!clientResponse.ok) {
-        return new Response('Client not found', { status: 404 })
-      }
-
-      const client = await clientResponse.json()
-
       console.log('📋 Generating prompt...')
       const promptStart = Date.now()
       const prompt = generatePrompt(documentType, serviceProvider, client, answers)

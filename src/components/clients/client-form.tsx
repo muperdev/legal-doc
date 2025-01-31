@@ -19,7 +19,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { User } from '@/payload-types'
+import { Client, User } from '@/payload-types'
 
 const clientSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -34,6 +34,7 @@ type ClientFormValues = z.infer<typeof clientSchema>
 
 interface ClientFormProps {
   user: User
+  handleCreateClient: (client: Client) => void
 }
 
 export function ClientForm({ user }: ClientFormProps) {
