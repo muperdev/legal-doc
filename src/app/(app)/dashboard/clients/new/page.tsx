@@ -15,6 +15,8 @@ export default async function NewClientPage() {
   }
 
   const createClient = async (client: Client) => {
+    'use server'
+    
     await payload.create({
       collection: 'clients',
       data: {
