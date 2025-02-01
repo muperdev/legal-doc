@@ -5,24 +5,30 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { Client } from '@/payload-types'
 
-export default async function NewClientPage() {
+async function createClient(client: Client) {
+  'use server'
+
   const payload = await getPayload({
     config: config,
   })
+
+  try {
+    await payload.create({
+      collection: 'clients',
+      data: client,
+    })
+
+    return { success: true }
+  } catch (error) {
+    console.error('Error creating client:', error)
+    return { success: false, error }
+  }
+}
+
+export default async function NewClientPage() {
   const user = await currentUser()
   if (!user) {
     redirect('/login')
-  }
-
-  const createClient = async (client: Client) => {
-    'use server'
-    
-    await payload.create({
-      collection: 'clients',
-      data: {
-        ...client,
-      },
-    })
   }
 
   return <ClientForm user={user} handleCreateClient={createClient} />
