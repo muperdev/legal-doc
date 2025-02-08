@@ -5,7 +5,7 @@ import config from '@payload-config'
 import { currentUser } from '@/lib/auth'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-12-18.acacia',
+  apiVersion: '2025-01-27.acacia',
 })
 
 const payload = await getPayload({
@@ -35,7 +35,6 @@ export async function POST(req: Request) {
         await stripe.customers.retrieve(customerId)
         customerExists = true
       } catch (error) {
-        console.log('Customer not found in Stripe, creating new one')
         customerExists = false
       }
     }

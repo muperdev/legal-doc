@@ -4,6 +4,7 @@ import { uploadthingStorage } from '@payloadcms/storage-uploadthing'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
+import { resendAdapter } from '@payloadcms/email-resend'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
@@ -21,6 +22,11 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
+  email: resendAdapter({
+    defaultFromAddress: 'mup@gimmedoc.com',
+    defaultFromName: 'GimmeDoc',
+    apiKey: process.env.RESEND_API_KEY || '',
+  }),
   collections: [Users, Documents, Clients, Newsletter],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

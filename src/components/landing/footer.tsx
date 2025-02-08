@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Facebook, Instagram, Twitter, Linkedin, Youtube, X, XCircleIcon } from 'lucide-react'
+import { Instagram } from 'lucide-react'
 import Image from 'next/image'
 
 export function Footer() {
@@ -37,15 +37,6 @@ export function Footer() {
               rel="noopener noreferrer"
             >
               <Image src="/xicon.png" alt="X" width={20} height={20} />
-            </Link>
-            
-            <Link
-              href="https://youtube.com/gimmedoc"
-              className="text-gray-400 hover:text-white"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Youtube className="h-5 w-5" />
             </Link>
           </div>
         </div>

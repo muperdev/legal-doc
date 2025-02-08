@@ -1,5 +1,7 @@
 import { isAdminFieldLevel } from '@/access/is-admin'
 import { isAdminOrSelf } from '@/access/is-admin-or-self'
+import { WelcomeEmailTemplate } from '@/email/welcome-template'
+import { SubscriptionActivatedTemplate } from '@/email/subscription-activated-template'
 import { CollectionConfig } from 'payload'
 
 export const Users: CollectionConfig = {
@@ -7,6 +9,29 @@ export const Users: CollectionConfig = {
   auth: true,
   admin: {
     useAsTitle: 'email',
+  },
+  hooks: {
+    afterChange: [
+      async ({ doc, previousDoc, req, operation }) => {
+        if (operation === 'create') {
+          req.payload.sendEmail({
+            to: doc.email,
+            subject: 'Welcome to GimmeDoc',
+            html: WelcomeEmailTemplate({ user: doc }),
+          })
+        } else if (
+          operation === 'update' &&
+          doc.subscription?.status === 'active' &&
+          previousDoc.subscription?.status !== 'active'
+        ) {
+          req.payload.sendEmail({
+            to: doc.email,
+            subject: 'Your GimmeDoc Pro Subscription is Active! 🎉',
+            html: SubscriptionActivatedTemplate({ user: doc }),
+          })
+        }
+      },
+    ],
   },
   access: {
     read: isAdminOrSelf,

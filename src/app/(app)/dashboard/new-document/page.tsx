@@ -41,7 +41,6 @@ async function uploadDocument(file: File, user: User) {
       },
     })
 
-    console.log(result)
   } catch (error) {
     throw error
   }
