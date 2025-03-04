@@ -147,7 +147,7 @@ export const Users: CollectionConfig = {
             { label: 'Inactive', value: 'inactive' },
           ],
           admin: {
-            readOnly: true,
+            readOnly: !isAdminFieldLevel,
           },
         },
         {
