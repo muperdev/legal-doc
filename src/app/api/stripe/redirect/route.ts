@@ -8,22 +8,22 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-02-24.acacia',
 })
 
-export async function POST(req: Request) {
+export async function GET(req: NextRequest) {
   try {
     // Get the token from the request
-    const token = getTokenFromRequest(req as NextRequest)
+    const token = getTokenFromRequest(req)
     if (!token) {
-      return new NextResponse('Unauthorized', { status: 401 })
+      return NextResponse.redirect(new URL('/login', req.url))
     }
 
     // Get the current user
     const user = await currentUser({ appliedToken: token })
     if (!user) {
-      return new NextResponse('Unauthorized', { status: 401 })
+      return NextResponse.redirect(new URL('/login', req.url))
     }
 
     // Get the price ID from the URL
-    const { searchParams } = new URL(req.url)
+    const { searchParams } = req.nextUrl
     const priceId = searchParams.get('priceId')
     if (!priceId) {
       return new NextResponse('Price ID is required', { status: 400 })
@@ -61,7 +61,12 @@ export async function POST(req: Request) {
       allow_promotion_codes: true,
     })
 
-    return NextResponse.json({ url: session.url })
+    // Redirect to Stripe checkout
+    if (session.url) {
+      return NextResponse.redirect(session.url)
+    } else {
+      return new NextResponse('Failed to create checkout session', { status: 500 })
+    }
   } catch (error) {
     console.error('Error creating checkout session:', error)
     if (error instanceof Error) {

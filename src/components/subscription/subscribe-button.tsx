@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { AnimatedButton } from '@/components/ui/animated-button'
 import { CreditCard } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { toast } from 'sonner'
 
 export type SubscriptionStatusTypes =
@@ -33,14 +33,14 @@ interface SubscribeButtonProps {
 
 // Live mode price IDs
 const STRIPE_PRICES = {
-  monthly: 'price_1QijDuGEdf9C6VIlUuqNCPgk',
-  yearly: 'price_1QijDuGEdf9C6VIlt9usUfwH',
+  pro_monthly: 'price_1QijDuGEdf9C6VIlUuqNCPgk',
+  pro_yearly: 'price_1QijDuGEdf9C6VIlt9usUfwH',
 }
 
 // Test mode price IDs
 // const STRIPE_PRICES = {
-//   monthly: 'price_1QjQah4MPi0gofik6s2Gb3Rm',
-//   yearly: 'price_1QjQb44MPi0gofik5WXjsEef',
+//   pro_monthly: 'price_1QjQah4MPi0gofik6s2Gb3Rm',
+//   pro_yearly: 'price_1QjQb44MPi0gofik5WXjsEef',
 // }
 
 export function SubscribeButton({
@@ -56,13 +56,26 @@ export function SubscribeButton({
     try {
       setLoading(true)
 
+      // Check if user is authenticated (for homepage usage)
+      if (!token) {
+        // Redirect to login with return URL that includes subscription intent
+        const priceId = STRIPE_PRICES[plan as keyof typeof STRIPE_PRICES]
+        if (!priceId) {
+          throw new Error(`Invalid plan: ${plan}`)
+        }
+
+        const returnUrl = `/api/stripe/redirect?priceId=${priceId}`
+        const loginUrl = `/login?returnUrl=${encodeURIComponent(returnUrl)}`
+        window.location.href = loginUrl
+        return
+      }
+
       // Create portal session for active subscriptions or management
       if (userSubscriptionStatus === 'active' || isManageSubscription) {
         const response = await fetch('/api/stripe/portal', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
           },
         })
 
@@ -78,16 +91,17 @@ export function SubscribeButton({
       }
 
       // For new subscriptions or reactivations, create checkout session
-      const response = await fetch(
-        `/api/stripe/checkout?priceId=${STRIPE_PRICES[plan as keyof typeof STRIPE_PRICES]}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
+      const priceId = STRIPE_PRICES[plan as keyof typeof STRIPE_PRICES]
+      if (!priceId) {
+        throw new Error(`Invalid plan: ${plan}`)
+      }
+
+      const response = await fetch(`/api/stripe/checkout?priceId=${priceId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      )
+      })
 
       if (!response.ok) {
         throw new Error('Failed to create checkout session')
@@ -138,7 +152,10 @@ export function SubscribeButton({
         )}
       >
         <CreditCard
-          className={cn('h-6 w-6 md:h-5 md:w-5', pathname === '/dashboard/subscription' ? 'text-black' : '')}
+          className={cn(
+            'h-6 w-6 md:h-5 md:w-5',
+            pathname === '/dashboard/subscription' ? 'text-black' : '',
+          )}
         />
         {getButtonText()}
       </button>

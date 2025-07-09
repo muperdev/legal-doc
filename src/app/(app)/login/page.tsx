@@ -2,8 +2,8 @@
 
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { login } from '@/lib/client-auth'
 import { loginSchema, type LoginFormData } from '@/lib/validations/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -11,9 +11,11 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import posthog from 'posthog-js'
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [loading, setLoading] = useState(false)
+  const returnUrl = searchParams.get('returnUrl')
 
   const {
     register,
@@ -32,7 +34,13 @@ export default function LoginPage() {
         { email: data.email }, // optional: set additional person properties
       )
       toast.success('Successfully logged in')
-      router.push('/dashboard')
+
+      // Redirect to returnUrl if it exists, otherwise go to dashboard
+      if (returnUrl) {
+        window.location.href = returnUrl
+      } else {
+        router.push('/dashboard')
+      }
     } catch (error) {
       console.error('Login failed:', error)
       toast.error(error instanceof Error ? error.message : 'Failed to log in')
@@ -137,5 +145,19 @@ export default function LoginPage() {
         </Link>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-neutral-900 flex items-center justify-center">
+          <div className="text-white">Loading...</div>
+        </div>
+      }
+    >
+      <LoginForm />
+    </Suspense>
   )
 }
