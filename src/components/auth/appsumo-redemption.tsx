@@ -7,6 +7,7 @@ import { CheckCircle2, XCircle } from 'lucide-react'
 import { signupSchema, type SignupFormData, type LoginFormData } from '@/lib/validations/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { trackTwitterConversion } from '@/lib/utils'
 
 type AuthStep = 'loading' | 'signup' | 'login' | 'success' | 'error'
 
@@ -56,6 +57,9 @@ export function AppSumoRedemption({ licenseData }: AppSumoRedemptionProps) {
       if (!response.ok) {
         throw new Error('Failed to create account')
       }
+
+      // Track Twitter conversion for AppSumo signup
+      trackTwitterConversion()
 
       setStep('success')
       setMessage('Successfully activated AppSumo license!')

@@ -9,6 +9,7 @@ import { signupSchema, type SignupFormData } from '@/lib/validations/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import { trackTwitterConversion } from '@/lib/utils'
 
 export default function SignupPage() {
   const router = useRouter()
@@ -26,6 +27,10 @@ export default function SignupPage() {
     try {
       setLoading(true)
       await signup(data)
+
+      // Track Twitter conversion for signup
+      trackTwitterConversion()
+
       toast.success('Account created successfully')
       router.push('/dashboard')
     } catch (error) {

@@ -30,3 +30,17 @@ export function formatFileType(mimeType: string): string {
 
   return mimeMap[mimeType] || mimeType.split('/')[1].toUpperCase()
 }
+
+/**
+ * Tracks Twitter conversion events
+ * @param eventId - The Twitter event ID (optional, defaults to configured event)
+ */
+export function trackTwitterConversion(eventId: string = 'tw-q4kzc-q4kzd'): void {
+  if (typeof window !== 'undefined' && (window as any).twq) {
+    try {
+      ;(window as any).twq('event', eventId, {})
+    } catch (error) {
+      console.warn('Twitter conversion tracking failed:', error)
+    }
+  }
+}

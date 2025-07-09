@@ -18,6 +18,7 @@ import { generatePDF } from '@/lib/pdf/generate-pdf'
 import { generateWord } from '@/lib/word/generate-word'
 import { LegalDocument } from '@/lib/pdf/document-structure'
 import { isSubscribed } from '@/lib/subscription-checker'
+import { trackTwitterConversion } from '@/lib/utils'
 import axios from 'axios'
 
 interface Client {
@@ -155,13 +156,13 @@ export function DocumentWizard({ clients, user, token, onUploadAction }: Documen
         const result = response.data
         setGeneratedDoc(result)
 
-        if (response.status !== 200) {
-          const error = response.data
-          if (response.status === 504) {
-            throw new Error('Document generation is taking longer than expected. Please try again.')
-          }
-          throw new Error(error || 'Failed to generate document')
+        // Upload the document
+        if (onUploadAction) {
+          await onUploadAction(result.document, user)
         }
+
+        // Track Twitter conversion for successful document generation
+        trackTwitterConversion()
 
         setGeneratedDoc(result)
         setStep(5)
