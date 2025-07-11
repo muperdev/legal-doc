@@ -12,14 +12,14 @@ interface PageContainerProps {
   user: User
 }
 
-export function PageContainer({ children, title, backUrl, user }: PageContainerProps) {
+export function PageContainer({ children, title, backUrl, user, token }: PageContainerProps) {
   return (
     <div className="flex-1 overflow-auto bg-black">
       <header className="bg-black border-b border-neutral-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center">
-              <MobileMenu user={user} />
+              <MobileMenu user={user} token={token} />
               {backUrl && (
                 <Link
                   href={backUrl}

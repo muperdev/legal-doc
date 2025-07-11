@@ -7,6 +7,8 @@ import { Client } from '@/payload-types'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { PageContainer } from '@/components/dashboard/layout/page-container'
+import { cookies } from 'next/headers'
+
 const payload = await getPayload({
   config: config,
 })
@@ -15,12 +17,15 @@ export const dynamic = 'force-dynamic'
 
 export default async function ClientsPage() {
   const user = await currentUser()
+  const cookieStore = await cookies()
+  const token = cookieStore.get('payload-token')?.value || null
+
   const userData = await payload.findByID({
     collection: 'users',
     id: user?.id.toString() || '0',
   })
   return (
-    <PageContainer user={userData} title="Clients">
+    <PageContainer user={userData} title="Clients" token={token}>
       <div className="flex-1 overflow-auto bg-black">
         <header className="bg-zinc-900 border-b border-zinc-800">
           <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">

@@ -7,9 +7,10 @@ import { Sidebar } from './sidebar'
 
 interface MobileMenuProps {
   user: User
+  token?: string | null
 }
 
-export function MobileMenu({ user }: MobileMenuProps) {
+export function MobileMenu({ user, token }: MobileMenuProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   return (
@@ -21,15 +22,19 @@ export function MobileMenu({ user }: MobileMenuProps) {
         <Menu className="h-6 w-6" />
       </button>
 
-      <div className={`
+      <div
+        className={`
         fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity
         ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}
-      `}>
-        <div className={`
+      `}
+      >
+        <div
+          className={`
           fixed inset-y-0 left-0 w-64 bg-black transform transition-transform duration-300
           ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
-        `}>
-          <Sidebar user={user} onClose={() => setIsMobileMenuOpen(false)} />
+        `}
+        >
+          <Sidebar user={user} token={token} onClose={() => setIsMobileMenuOpen(false)} />
         </div>
       </div>
     </>

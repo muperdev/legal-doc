@@ -40,7 +40,6 @@ async function uploadDocument(file: File, user: User) {
         documents: [...(user.documents || []), result.doc.id],
       },
     })
-
   } catch (error) {
     throw error
   }
@@ -95,7 +94,7 @@ export default async function NewDocumentPage() {
     id: user?.id.toString() || '0',
   })
   return (
-    <PageContainer user={user} title="New Document" backUrl="/dashboard">
+    <PageContainer user={user} title="New Document" backUrl="/dashboard" token={token.value}>
       <div className="py-8 w-full">
         <DocumentWizard
           token={token.value}

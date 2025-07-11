@@ -12,7 +12,7 @@ export default async function SubscriptionPage() {
     return redirect('/login')
   }
   return (
-    <PageContainer user={user} title="Subscription Plans">
+    <PageContainer user={user} title="Subscription Plans" token={token}>
       <div className="max-w-5xl mx-auto">
         <div className="mb-8">
           <h2 className="text-xl text-white mb-2">Choose Your Plan</h2>

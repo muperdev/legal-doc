@@ -45,10 +45,12 @@ const routes = [
 
 export function Sidebar({
   user,
+  token,
   onClose,
   setIsMobileMenuOpen,
 }: {
   user: User
+  token?: string | null
   onClose?: () => void
   setIsMobileMenuOpen?: (isOpen: boolean) => void
 }) {
@@ -97,6 +99,7 @@ export function Sidebar({
               userSubscriptionStatus={user?.subscription?.status || null}
               plan={user?.subscription?.plan || 'pro_monthly'}
               isManageSubscription={isSubscribed(user)}
+              token={token}
             />
           </div>
         </div>
